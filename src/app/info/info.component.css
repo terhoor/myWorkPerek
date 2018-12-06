@@ -1,0 +1,12 @@
+.title {
+  padding: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.gray-line {
+  height: 4px;
+  width: 100%;
+  background-color: rgba(245, 235, 235, 0.924);
+  border: none;
+}

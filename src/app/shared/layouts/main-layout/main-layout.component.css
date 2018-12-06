@@ -1,0 +1,22 @@
+.green {
+  background-color: green;
+}
+
+.header {
+  min-height: 40px;
+  padding-top: 40px;
+  color: white;
+  font-weight: bold;
+  padding-left: 20px;
+  font-size: 18px;
+}
+
+.back {
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.header-title {
+  display: inline-block;
+}
+
