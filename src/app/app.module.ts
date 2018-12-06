@@ -8,6 +8,11 @@ import { InfoComponent } from './info/info.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BtnNextComponent } from './shared/components/buttons/btn-next/btn-next.component';
 import { BtnBackComponent } from './shared/components/buttons/btn-back/btn-back.component';
+import { MaterialModule } from './material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ConsentPageComponent } from './consent-page/consent-page.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -17,11 +22,16 @@ import { BtnBackComponent } from './shared/components/buttons/btn-back/btn-back.
     CardComponent,
     InfoComponent,
     BtnNextComponent,
-    BtnBackComponent
+    BtnBackComponent,
+    ConsentPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
