@@ -3,6 +3,17 @@
   background-color: green;
   text-transform: uppercase;
   text-align: center;
-  padding: 30px 0px;
+  padding: 10px 0px;
   border-radius: 10px;
+  width: 90%;
+  display: inline-block;
+}
+
+.box-button {
+  padding-top: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+.button {
 }

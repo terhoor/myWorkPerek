@@ -1,0 +1,34 @@
+<app-card></app-card>
+
+<hr class="gray-line">
+
+<div class="box-number">
+  <div class="box-number-title">
+    Укажите номер мобильного телефона:
+  </div>
+  <form class="my-form" [formGroup]="consent" (ngSubmit)="onSubmit()">
+    +7
+    <mat-form-field>
+      <input matInput placeholder="Telephone" [formControlName]="'telephone'" class="num-before">
+    </mat-form-field>
+
+    <div class="box-checkboxes">
+      <div class="box-checkbox">
+        <mat-checkbox class="padd" [formControlName]="'checkbox1'"></mat-checkbox>
+        <label>
+          Я согласен(на) с <span class="green">Правилами клуба</span>
+        </label>
+      </div>
+      <div class="box-checkbox">
+        <mat-checkbox class="padd" [formControlName]="'checkbox2'"></mat-checkbox>
+        <label>Я согласен(на) с
+          <span class="green">Соглашением на обработку и передачу персональных данных</span>
+        </label>
+      </div>
+    </div>
+
+    <app-btn-next></app-btn-next>
+  </form>
+
+
+</div>

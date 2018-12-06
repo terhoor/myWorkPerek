@@ -1,0 +1,38 @@
+.my-form {
+}
+
+.box-number {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.box-checkboxes {
+  font-size: 14px;
+}
+
+.box-checkbox {
+  padding: 10px;
+}
+
+.padd {
+  padding-right: 10px;
+}
+
+.input-number {
+  margin-bottom: 15px;
+}
+
+.num-before {
+  position: relative;
+}
+
+.num-before::before {
+  position: absolute;
+  left: -30px;
+  z-index: 1000;
+  content: '+7';
+}
+
+.green {
+  color: green;
+}
