@@ -1,0 +1,23 @@
+<app-card></app-card>
+
+<hr class="gray-line">
+
+<div class="container">
+  <div class="text-number">
+      На номер {{phoneNumber}} мы отправили SMS с кодом подтверждения.
+    </div>
+    
+    <div class="code">
+      <form [formGroup]="formCode">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Код подтверждения"
+            [formControlName]="'code'"
+          >
+        </mat-form-field>
+    
+    
+      </form>
+    </div>
+</div>
