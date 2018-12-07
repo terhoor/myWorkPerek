@@ -15,6 +15,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PhoneMaskDirective } from './shared/directives/phone-mask.directive';
 import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
 import { OtherDataService } from './shared/services/other-data.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -28,7 +29,8 @@ import { OtherDataService } from './shared/services/other-data.service';
     BtnBackComponent,
     ConsentPageComponent,
     PhoneMaskDirective,
-    CodeAccessPageComponent
+    CodeAccessPageComponent,
+  
 
   ],
   imports: [
@@ -37,7 +39,8 @@ import { OtherDataService } from './shared/services/other-data.service';
     MaterialModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   exports: [
     PhoneMaskDirective

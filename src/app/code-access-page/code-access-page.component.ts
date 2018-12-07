@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
+import { MyCode } from '../shared/interfaces/code.model';
 
 @Component({
   selector: 'app-code-access-page',
@@ -8,44 +9,83 @@ import { OtherDataService } from '../shared/services/other-data.service';
   styleUrls: ['./code-access-page.component.css']
 })
 export class CodeAccessPageComponent implements OnInit {
+
+  private myCode: string;
+  private attempt: number = 3;
+  timer: number = 5;
   phoneNumber: string;
-  isValidForm: boolean;
-  timer: number = 2;
+  codeValid: boolean;
   timerEnd: boolean = false;
   formCode = this.fb.group({
-    code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
+    code: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]]
   });
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService) { }
 
   ngOnInit() {
+    this.otherDataService.getCode().subscribe(({code}: MyCode) => {
+      this.myCode = code;
+    });
     this.otherDataService.phoneNumber.subscribe((numberStr) => {
 
       this.phoneNumber = numberStr.replace(/^(\+\d)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '$1 ($2) $3-$4-$5');
     });
-    
+
+    this.formCode.controls['code'].valueChanges.subscribe(() => {
+      this.checkCodeInInput();
+    });
+
     this.timerTick();
   }
 
   timerTick() {
     const myTimer = setInterval(() => {
-
+      
+      this.timer--;
       if (this.timer === 0) {
         clearTimeout(myTimer);
         this.timerEnd = true;
-        return;
+
       }
-      this.timer--;
     }, 1000);
 
     console.log(this.timer);
   }
 
   startTimer() {
-    this.timerEnd = false;
-    this.timer = 2;
+    this.timerReset();
     this.timerTick();
+  }
+
+  timerReset() {
+    this.timer = 10;
+    this.timerEnd = false;
+  }
+
+  doAttempt() {
+    this.attempt--;
+
+    if (this.attempt === 0) {
+      this.formCode.disable();
+    }
+  }
+
+  checkCodeInInput() {
+    
+    const value = this.formCode.controls['code'].value;
+    if (value.length === 5) {
+      this.codeValid = value === this.myCode;
+
+      if (!this.codeValid) {
+        this.doAttempt();
+      }
+
+    }
+  }
+
+  checkChar(event) {
+    return event.charCode >= 48 && event.charCode <= 57;
   }
 
 }

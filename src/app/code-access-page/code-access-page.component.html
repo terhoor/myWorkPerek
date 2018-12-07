@@ -14,6 +14,7 @@
             matInput
             placeholder="Код подтверждения"
             [formControlName]="'code'"
+            (keypress)="checkChar($event)"
           >
         </mat-form-field>
       <div class="text-repeat">
@@ -23,10 +24,11 @@
         <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
           Отправить смс с кодом повторно
         </a>
+        <div>Осталось {{attempt}} попыток</div>
       </div>
       
       
-      <app-btn-next [isValid]="formCode.valid"></app-btn-next>
+      <app-btn-next [isValid]="codeValid"></app-btn-next>
       <app-btn-back></app-btn-back>
     
       </form>
