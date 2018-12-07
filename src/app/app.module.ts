@@ -12,6 +12,9 @@ import { MaterialModule } from './material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ConsentPageComponent } from './consent-page/consent-page.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PhoneMaskDirective } from './shared/directives/phone-mask.directive';
+import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
+import { OtherDataService } from './shared/services/other-data.service';
 
 
 
@@ -23,7 +26,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     InfoComponent,
     BtnNextComponent,
     BtnBackComponent,
-    ConsentPageComponent
+    ConsentPageComponent,
+    PhoneMaskDirective,
+    CodeAccessPageComponent
+
   ],
   imports: [
     BrowserModule,
@@ -33,7 +39,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [],
+  exports: [
+    PhoneMaskDirective
+  ],
+  providers: [OtherDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,13 @@
   <form class="my-form" [formGroup]="consent" (ngSubmit)="onSubmit()">
     +7
     <mat-form-field>
-      <input matInput placeholder="Telephone" [formControlName]="'telephone'" class="num-before">
+      <input
+        matInput
+        placeholder="Telephone"
+        [formControlName]="'phone'"
+        class="num-before"
+        appPhoneMask
+      >
     </mat-form-field>
 
     <div class="box-checkboxes">
@@ -26,8 +32,8 @@
         </label>
       </div>
     </div>
-
-    <app-btn-next></app-btn-next>
+    
+    <app-btn-next [isValid]="isValidForm"></app-btn-next>
   </form>
 
 
