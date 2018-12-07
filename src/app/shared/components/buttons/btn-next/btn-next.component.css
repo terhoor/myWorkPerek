@@ -1,11 +1,11 @@
 .button-next {
   color: white;
-  background-color: green;
+  background-color: rgb(29, 207, 29);
   text-transform: uppercase;
   text-align: center;
   padding: 10px 0px;
   border-radius: 10px;
-  width: 80%;
+  width: 90%;
   display: inline-block;
 }
 
@@ -15,5 +15,6 @@
   width: 100%;
 }
 
-.button {
+.button-next:disabled {
+  background-color: rgb(141, 197, 116);
 }
