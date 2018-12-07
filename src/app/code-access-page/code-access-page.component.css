@@ -1,3 +1,11 @@
 .container {
   text-align: center;
 }
+
+.text-repeat {
+  padding-top: 15px;
+}
+.repeat-sms {
+  color: rgb(209, 186, 186);
+  text-decoration: underline;
+}

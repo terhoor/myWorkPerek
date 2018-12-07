@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="text-number">
-      На номер {{phoneNumber}} мы отправили SMS с кодом подтверждения.
+      На номер <strong>{{phoneNumber}}</strong> мы отправили SMS с кодом подтверждения.
     </div>
     
     <div class="code">
@@ -16,8 +16,20 @@
             [formControlName]="'code'"
           >
         </mat-form-field>
-    
+      <div class="text-repeat">
+        <div class="text" *ngIf="timer !== 0">
+            Отправить SMS с кодом повторно можно будет через {{timer}} секунда
+        </div>
+        <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
+          Отправить смс с кодом повторно
+        </a>
+      </div>
+      
+      
+      <app-btn-next [isValid]="formCode.valid"></app-btn-next>
+      <app-btn-back></app-btn-back>
     
       </form>
     </div>
+
 </div>
