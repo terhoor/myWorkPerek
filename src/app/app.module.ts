@@ -18,7 +18,7 @@ import { OtherDataService } from './shared/services/other-data.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { MatNativeDateModule } from '@angular/material';
-import { RegistrationAcceessPageComponent } from './registration-acceess-page/registration-acceess-page.component';
+import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
 
 
 
@@ -34,7 +34,7 @@ import { RegistrationAcceessPageComponent } from './registration-acceess-page/re
     PhoneMaskDirective,
     CodeAccessPageComponent,
     RegistrationPageComponent,
-    RegistrationAcceessPageComponent,
+    RegistrationAccessPageComponent,
   
 
   ],

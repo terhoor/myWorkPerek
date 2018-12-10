@@ -7,3 +7,15 @@
 .my-ul li {
   padding: 5px 0px;
 }
+
+.my-ul li {
+  list-style: none;
+  padding-left: 30px;
+  position: relative;
+}
+
+i.icon-green {
+  position: absolute;
+  left: -10px;
+  color: rgb(91, 179, 91);
+}
