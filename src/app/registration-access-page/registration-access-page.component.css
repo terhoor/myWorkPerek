@@ -1,0 +1,24 @@
+.text-box-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+li {
+  list-style: none;
+  padding-left: 30px;
+  position: relative;
+}
+
+i.icon-green {
+  position: absolute;
+  left: -10px;
+  color: rgb(91, 179, 91);
+}
