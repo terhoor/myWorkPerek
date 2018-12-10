@@ -4,6 +4,8 @@ import { MainLayoutComponent } from './shared/layouts/main-layout/main-layout.co
 import { InfoComponent } from './info/info.component';
 import { ConsentPageComponent } from './consent-page/consent-page.component';
 import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
+import { RegistrationAcceessPageComponent } from './registration-acceess-page/registration-acceess-page.component';
 
 const appRoutes: Routes = [
   {path: '', component: MainLayoutComponent, children: [
@@ -11,6 +13,8 @@ const appRoutes: Routes = [
     {path: 'info', component: InfoComponent},
     {path: 'consent', component: ConsentPageComponent},
     {path: 'code', component: CodeAccessPageComponent},
+    {path: 'registration', component: RegistrationPageComponent},
+    {path: 'register-success', component: RegistrationAcceessPageComponent},
   ]},
   {path: '**', redirectTo: '/info'}
 

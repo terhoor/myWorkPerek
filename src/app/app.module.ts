@@ -16,6 +16,9 @@ import { PhoneMaskDirective } from './shared/directives/phone-mask.directive';
 import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
 import { OtherDataService } from './shared/services/other-data.service';
 import { HttpClientModule } from '@angular/common/http';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
+import { MatNativeDateModule } from '@angular/material';
+import { RegistrationAcceessPageComponent } from './registration-acceess-page/registration-acceess-page.component';
 
 
 
@@ -30,6 +33,8 @@ import { HttpClientModule } from '@angular/common/http';
     ConsentPageComponent,
     PhoneMaskDirective,
     CodeAccessPageComponent,
+    RegistrationPageComponent,
+    RegistrationAcceessPageComponent,
   
 
   ],
@@ -40,7 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatNativeDateModule
   ],
   exports: [
     PhoneMaskDirective
