@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-popup-info',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopupInfoComponent implements OnInit {
 
-  constructor() { }
+  whatShow: string;
+  constructor(
+    public dialogRef: MatDialogRef<PopupInfoComponent>,
+    @Inject(MAT_DIALOG_DATA) public strInfo: string ) {}
+    
+    ngOnInit() {
+      this.whatShow = this.strInfo === 'coupon' ? 'coupon' : 'club-rules';
+    }
 
-  ngOnInit() {
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

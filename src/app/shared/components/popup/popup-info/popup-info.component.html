@@ -1,4 +1,6 @@
-<div class="coupon">
+<mat-dialog-content class="size-window">
+
+<div class="coupon" *ngIf="whatShow === 'coupon'">
   <h3>
     Что такое купон-чек?
   </h3>
@@ -16,7 +18,7 @@
   
 </div>
 
-<div class="club-rules">
+<div class="club-rules" *ngIf="whatShow === 'club-rules'">
   <h2>
     Правила клуба
   </h2>
@@ -43,3 +45,5 @@
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut necessitatibus minus commodi eligendi molestiae fugiat assumenda tenetur in deleniti. Dolore dicta illum dolorem qui itaque, cumque, repellat veniam ratione ab illo esse excepturi tempora iure, consequatur iste nostrum nobis. Nesciunt aspernatur ratione voluptatem dicta veritatis laudantium, accusantium quos recusandae omnis harum quisquam explicabo officiis excepturi ex, sunt provident ad iste dolorum maxime vel pariatur laborum assumenda! Sunt perferendis eos iure.
   </div>
 </div>
+
+</mat-dialog-content>
