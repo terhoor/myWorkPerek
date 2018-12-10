@@ -22,3 +22,9 @@ i.icon-green {
   left: -10px;
   color: rgb(91, 179, 91);
 }
+
+.title {
+  padding: 15px;
+  font-weight: bold;
+  text-align: center;
+}
