@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="text-title">
+    Для завершения регистрации заполните форму:
+  </div>
+
+  <div class="code">
+    <form [formGroup]="formReg" (ngSubmit)="regUser()">
+      <div class="inputs-box">
+        <div class="input-box">
+          <mat-form-field class="input-change">
+            <input
+              matInput
+              placeholder="Имя"
+              [formControlName]="'name'"
+              >
+          </mat-form-field>
+        </div>
+        <div class="input-box">
+          <mat-form-field class="input-change">
+            <input
+              matInput
+              placeholder="Фамилия"
+              [formControlName]="'surname'"
+            >
+          </mat-form-field>
+        </div>
+        <div class="input-box">
+          <mat-form-field class="input-change">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="Дата рождения"
+              [formControlName]="'birthday'"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="input-box">
+          <mat-form-field class="input-change">
+            <input
+              matInput
+              placeholder="E-mail"
+              [formControlName]="'email'"
+            >
+        </mat-form-field>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <app-btn-next [isValid]="nextAccess"></app-btn-next>
+        <app-btn-back></app-btn-back>
+      </div>
+
+    </form>
+  </div>
+
+</div>
