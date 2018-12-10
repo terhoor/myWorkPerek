@@ -39,7 +39,7 @@ export class CodeAccessPageComponent implements OnInit {
     this.timerTick();
   }
 
-  timerTick() {
+  timerTick(): void {
     const myTimer = setInterval(() => {
       
       this.timer--;
@@ -49,33 +49,36 @@ export class CodeAccessPageComponent implements OnInit {
 
       }
     }, 1000);
-
-    console.log(this.timer);
   }
 
-  startTimer() {
+  startTimer(): void {
     this.timerReset();
     this.timerTick();
   }
 
-  timerReset() {
+  timerReset(): void {
     this.timer = 10;
     this.timerEnd = false;
   }
 
-  doAttempt() {
-    this.attempt--;
+  doAttempt(): void {
+    if (this.attempt > 0) {
+      this.attempt--;
+    }
 
     if (this.attempt === 0) {
       this.formCode.disable();
     }
   }
 
-  checkCodeInInput() {
-    
+  checkCodeInInput(): void {
+    if (this.formCode.disabled) {
+      return;
+    }
+
     const value = this.formCode.controls['code'].value;
     if (value.length === 5) {
-      this.codeValid = value === this.myCode;
+      this.codeValid = (value === this.myCode);
 
       if (!this.codeValid) {
         this.doAttempt();
@@ -84,7 +87,7 @@ export class CodeAccessPageComponent implements OnInit {
     }
   }
 
-  checkChar(event) {
+  checkChar(event): boolean {
     return event.charCode >= 48 && event.charCode <= 57;
   }
 

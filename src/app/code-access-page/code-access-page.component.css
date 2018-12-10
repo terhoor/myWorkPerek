@@ -9,3 +9,7 @@
   color: rgb(209, 186, 186);
   text-decoration: underline;
 }
+
+.warning {
+  color: red;
+}
