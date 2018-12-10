@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { MyCode } from '../shared/interfaces/code.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-code-access-page',
@@ -14,26 +15,24 @@ export class CodeAccessPageComponent implements OnInit {
   private attempt: number = 3;
   timer: number = 5;
   phoneNumber: string;
-  codeValid: boolean;
+  nextAccess: boolean;
   timerEnd: boolean = false;
   formCode = this.fb.group({
     code: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]]
   });
   constructor(
     private fb: FormBuilder,
-    private otherDataService: OtherDataService
+    private otherDataService: OtherDataService,
+    private router: Router
     ) { }
 
   ngOnInit() {
-    this.otherDataService.getCode().subscribe(({code}: MyCode) => {
-      this.myCode = code;
-    });
     this.otherDataService.phoneNumber.subscribe((numberStr) => {
       this.phoneNumber = this.otherDataService.changeNumberDecore(numberStr);
     });
 
     this.formCode.controls['code'].valueChanges.subscribe(() => {
-      this.checkCodeInInput();
+      this.nextAccess = true;
     });
 
     this.timerTick();
@@ -71,24 +70,19 @@ export class CodeAccessPageComponent implements OnInit {
     }
   }
 
-  checkCodeInInput(): void {
-    if (this.formCode.disabled) {
-      return;
-    }
-
-    const value = this.formCode.controls['code'].value;
-    if (value.length === 5) {
-      this.codeValid = (value === this.myCode);
-
-      if (!this.codeValid) {
-        this.doAttempt();
-      }
-
-    }
-  }
-
   checkChar(event): boolean {
     return event.charCode >= 48 && event.charCode <= 57;
+  }
+
+  checkCode() {
+    const valueForm = this.formCode.value;
+    this.otherDataService.getCheckCode().subscribe((objWithCode: MyCode) => {
+      if (objWithCode.code === valueForm.code) {
+        this.router.navigate(['/registration']);
+      } else {
+        this.doAttempt();
+      }
+    });
   }
 
 }

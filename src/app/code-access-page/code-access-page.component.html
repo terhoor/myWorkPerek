@@ -4,22 +4,17 @@
 
 <div class="container">
   <div class="text-number">
-      На номер <strong>{{phoneNumber}}</strong> мы отправили SMS с кодом подтверждения.
-    </div>
-    
-    <div class="code">
-      <form [formGroup]="formCode">
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Код подтверждения"
-            [formControlName]="'code'"
-            (keypress)="checkChar($event)"
-          >
-        </mat-form-field>
-      <div class="text-repeat">
+    На номер <strong>{{phoneNumber}}</strong> мы отправили SMS с кодом подтверждения.
+  </div>
+
+  <div class="code">
+    <form [formGroup]="formCode" (ngSubmit)="checkCode()">
+      <mat-form-field>
+        <input matInput placeholder="Код подтверждения" [formControlName]="'code'" (keypress)="checkChar($event)">
+      </mat-form-field>
+      <div class="text-repeat" *ngIf="!formCode.disabled">
         <div class="text" *ngIf="timer !== 0">
-            Отправить SMS с кодом повторно можно будет через {{timer}} секунда
+          Отправить SMS с кодом повторно можно будет через {{timer}} секунда
         </div>
         <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
           Отправить смс с кодом повторно
@@ -29,12 +24,12 @@
       <div *ngIf="attempt === 0" class="warning">
         Превышен лимин попыток
       </div>
-      
-      
-      <app-btn-next [isValid]="codeValid"></app-btn-next>
-      <app-btn-back></app-btn-back>
-    
-      </form>
-    </div>
+
+      <div class="buttons">
+        <app-btn-next [isValid]="nextAccess"></app-btn-next>
+        <app-btn-back></app-btn-back>
+      </div>
+    </form>
+  </div>
 
 </div>
