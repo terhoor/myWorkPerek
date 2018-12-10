@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
 
@@ -12,27 +12,42 @@ export class ConsentPageComponent implements OnInit {
 
 
   isValidForm: boolean = false;
-  consent = this.fb.group({
-    phone: ['', [ Validators.required, Validators.minLength(16)]],
-    checkbox1: ['', [Validators.required]],
-    checkbox2: ['', [Validators.required]]
-  });
+  consent: FormGroup;
 
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private otherDataService: OtherDataService
-    ) { }
+  ) { }
 
   ngOnInit() {
+    let lastNumber = this.otherDataService.phoneNumber.getValue();
+    if (lastNumber !== '') {
+      lastNumber = this.otherDataService.changeNumberDecore(lastNumber.slice(2));
+
+    }
+    this.consent = this.fb.group({
+      phone: [lastNumber, [Validators.required,
+        Validators.minLength(15),
+        Validators.maxLength(15)
+      ]],
+      checkbox1: ['', [Validators.required]],
+      checkbox2: ['', [Validators.required]]
+    });
 
     this.onChanges();
-   }
 
-   onChanges() {
+  }
+
+  onChanges() {
     const form = this.consent;
     this.consent.valueChanges.subscribe(() => {
+      if (this.consent.controls['phone'].value.length > 15) {
+        this.consent.patchValue({
+          'phone': this.consent.controls['phone'].value.slice(0, 15)
+        });
+      }
       this.isValidForm = form.valid && form.controls['checkbox1'].value === true && form.controls['checkbox2'].value === true;
     });
   }

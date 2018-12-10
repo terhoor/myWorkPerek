@@ -21,15 +21,15 @@ export class CodeAccessPageComponent implements OnInit {
   });
   constructor(
     private fb: FormBuilder,
-    private otherDataService: OtherDataService) { }
+    private otherDataService: OtherDataService
+    ) { }
 
   ngOnInit() {
     this.otherDataService.getCode().subscribe(({code}: MyCode) => {
       this.myCode = code;
     });
     this.otherDataService.phoneNumber.subscribe((numberStr) => {
-
-      this.phoneNumber = numberStr.replace(/^(\+\d)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '$1 ($2) $3-$4-$5');
+      this.phoneNumber = this.otherDataService.changeNumberDecore(numberStr);
     });
 
     this.formCode.controls['code'].valueChanges.subscribe(() => {
