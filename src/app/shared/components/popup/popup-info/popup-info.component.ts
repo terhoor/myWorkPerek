@@ -14,10 +14,10 @@ export class PopupInfoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public strInfo: string ) {}
     
     ngOnInit() {
-      this.whatShow = this.strInfo === 'coupon' ? 'coupon' : 'club-rules';
+      this.whatShow = this.strInfo;
     }
 
-  onNoClick(): void {
+    close(): void {
     this.dialogRef.close();
   }
 

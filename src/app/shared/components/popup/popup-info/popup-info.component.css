@@ -1,3 +1,20 @@
-.size-window {
+.box-info {
+  position: relative;
+}
 
+.close {
+  position: absolute;
+  right: 0px;
+  top: -26px;
+  font-size: 24px;
+  color: rgb(86, 192, 122);
+}
+
+
+h3 {
+  font-size: 16px;
+}
+
+.text {
+  margin-bottom: 15px;
 }

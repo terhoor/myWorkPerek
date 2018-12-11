@@ -1,49 +1,135 @@
-<mat-dialog-content class="size-window">
+<div class="box-info">
+  <div class="coupon" *ngIf="whatShow === 'coupon'">
+    <h3>
+      Что такое купон-чек?
+    </h3>
+    <div class="text">
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore itaque eveniet non, quod pariatur modi velit
+      animi fuga nesciunt, vitae assumenda sint obcaecati magnam quasi. Dignissimos impedit laborum voluptatum
+      obcaecati, dolorem quisquam doloribus. Cupiditate corporis exercitationem iusto at, hic aliquid.
+    </div>
+    <h3>Как получить купон</h3>
+    <div class="text">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro mollitia deserunt, aperiam quos qui totam id sed
+      perspiciatis itaque ut sit omnis aut quisquam expedita quam quod eveniet, quae adipisci.
+    </div>
+    <h3>Как получить купон</h3>
+    <div class="text">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro mollitia deserunt, aperiam quos qui totam id sed
+      perspiciatis itaque ut sit omnis aut quisquam expedita quam quod eveniet, quae adipisci.
+    </div>
 
-<div class="coupon" *ngIf="whatShow === 'coupon'">
-  <h3>
-    Что такое купон-чек?
-  </h3>
-  <div class="text">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore itaque eveniet non, quod pariatur modi velit animi fuga nesciunt, vitae assumenda sint obcaecati magnam quasi. Dignissimos impedit laborum voluptatum obcaecati, dolorem quisquam doloribus. Cupiditate corporis exercitationem iusto at, hic aliquid.
   </div>
-  <h3>Как получить купон</h3>
-  <div class="text">
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro mollitia deserunt, aperiam quos qui totam id sed perspiciatis itaque ut sit omnis aut quisquam expedita quam quod eveniet, quae adipisci.
+
+  <div class="club-rules" *ngIf="whatShow === 'club-rules'">
+    <h3>
+      Правила клуба
+    </h3>
+    <div class="info title">
+      Правила программы лояльности "Клуб перекресток"
+    </div>
+    <h4>1. Общие положения.</h4>
+    <div class="text">
+      1.1. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima, iure beatae distinctio dolores soluta
+      numquam adipisci provident velit, nostrum repudiandae porro? Assumenda ullam provident quidem, officiis qui omnis
+      dolores non sit sequi consectetur temporibus fugit quod a repellendus, ab beatae cum! Suscipit harum velit,
+      eveniet maiores debitis necessitatibus accusamus perspiciatis esse voluptas similique optio vel pariatur deleniti
+      magnam dolorem, iste quisquam neque expedita illo vitae unde labore. Ratione sapiente blanditiis quis similique
+      error beatae voluptatum animi dolor molestiae laudantium illo doloribus consectetur nemo aspernatur, possimus ab
+      perferendis molestias facere dolore labore perspiciatis placeat obcaecati. Amet iusto rem itaque iste velit.
+    </div>
+
+    <div class="text">
+      1.2.Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur aliquam dolores eligendi perspiciatis
+      ad iure, autem expedita? Nostrum repudiandae corrupti laudantium dolores perferendis officiis sit similique eos.
+      Totam asperiores perspiciatis architecto dicta maxime delectus amet possimus impedit, tempora sequi illum
+      cupiditate praesentium, dolor dignissimos consequatur! Aliquid, deserunt reprehenderit? Dolorum sit adipisci
+      distinctio explicabo aut totam corrupti, dolores ut nobis obcaecati ullam quas tempore at quo culpa consectetur
+      reprehenderit praesentium. Alias, quisquam dolorem excepturi similique culpa provident neque? Facere veritatis
+      laudantium recusandae, exercitationem dolorem placeat facilis quas quam aliquid eveniet blanditiis minus beatae
+      quis, repellat ipsum nobis illum cum nesciunt sunt!
+    </div>
+
+    <div class="text">
+      1.3. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente, ducimus?
+    </div>
+
+    <h4>
+      Термины и определения
+    </h4>
+    <div class="text">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut necessitatibus minus commodi eligendi molestiae
+      fugiat assumenda tenetur in deleniti. Dolore dicta illum dolorem qui itaque, cumque, repellat veniam ratione ab
+      illo esse excepturi tempora iure, consequatur iste nostrum nobis. Nesciunt aspernatur ratione voluptatem dicta
+      veritatis laudantium, accusantium quos recusandae omnis harum quisquam explicabo officiis excepturi ex, sunt
+      provident ad iste dolorum maxime vel pariatur laborum assumenda! Sunt perferendis eos iure.
+    </div>
   </div>
-  <h3>Как получить купон</h3>
-  <div class="text">
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro mollitia deserunt, aperiam quos qui totam id sed perspiciatis itaque ut sit omnis aut quisquam expedita quam quod eveniet, quae adipisci.
+
+
+  <div class="opportunity" *ngIf="whatShow === 'opportunity'">
+    <h3>
+      Почему через приложение Едадил нельзя тратить баллы с карты Перекресток?
+    </h3>
+    <div class="text">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis quo qui iste error molestiae quisquam corporis
+      inventore, molestias fuga ipsum.
+    </div>
+
+    <div class="text">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident debitis minus quos fugiat, excepturi enim
+      libero necessitatibus delectus error temporibus id aspernatur accusantium ea veritatis iure magnam aut nulla
+      neque! Atque totam hic ducimus optio sequi, quisquam similique nesciunt odio.
+    </div>
+
   </div>
-  
+
+  <div class="data-processing" *ngIf="whatShow === 'data-processing'">
+    <h3>
+      Соглашением на обработку и передачу персональных данных
+    </h3>
+    <div class="text">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius optio tempore explicabo distinctio accusamus at
+      consequatur magnam, quae, incidunt modi id veritatis reprehenderit iusto, ipsa quam? Blanditiis consequuntur
+      error sequi fugiat unde incidunt cum voluptates, aliquid optio iste, explicabo officia, eveniet nulla at odio
+      facere autem sint omnis. Architecto recusandae sed iste! Reprehenderit porro aliquam voluptatem, architecto
+      eveniet ipsum numquam modi harum debitis. Illo, veniam repellendus excepturi vitae expedita fugit! Cumque
+      ducimus, corporis libero autem magnam itaque aspernatur in veniam laboriosam eligendi maxime perferendis, dicta,
+      velit voluptates minus facilis placeat error consequuntur tempore blanditiis obcaecati! Cumque dicta consequuntur
+      ipsam ullam.
+    </div>
+
+    <div class="text">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius optio tempore explicabo distinctio accusamus at
+      consequatur magnam, quae, incidunt modi id veritatis reprehenderit iusto, ipsa quam? Blanditiis consequuntur
+      error sequi fugiat unde incidunt cum voluptates, aliquid optio iste, explicabo officia, eveniet nulla at odio
+      facere autem sint omnis. Architecto recusandae sed iste! Reprehenderit porro aliquam voluptatem, architecto
+      eveniet ipsum numquam modi harum debitis. Illo, veniam repellendus excepturi vitae expedita fugit! Cumque
+      ducimus, corporis libero autem magnam itaque aspernatur in veniam laboriosam eligendi maxime perferendis, dicta,
+      velit voluptates minus facilis placeat error consequuntur tempore blanditiis obcaecati! Cumque dicta consequuntur
+      ipsam ullam.
+    </div>
+
+    <div class="text">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius optio tempore explicabo distinctio accusamus at
+      consequatur magnam, quae, incidunt modi id veritatis reprehenderit iusto, ipsa quam? Blanditiis consequuntur
+      error sequi fugiat unde incidunt cum voluptates, aliquid optio iste, explicabo officia, eveniet nulla at odio
+      facere autem sint omnis.
+    </div>
+
+    <div class="text">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius optio tempore explicabo distinctio accusamus at
+      consequatur magnam, quae, incidunt modi id veritatis reprehenderit iusto.
+    </div>
+
+
+  </div>
+
+
+
+  <div class="close" (click)="close()">
+    &#10006;
+  </div>
+
+
 </div>
-
-<div class="club-rules" *ngIf="whatShow === 'club-rules'">
-  <h2>
-    Правила клуба
-  </h2>
-  <div class="info title">
-    Правила программы лояльности "Клуб перекресток"
-  </div>
-  <h3>1. Общие положения.</h3>
-  <div class="text">
-    1.1. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima, iure beatae distinctio dolores soluta numquam adipisci provident velit, nostrum repudiandae porro? Assumenda ullam provident quidem, officiis qui omnis dolores non sit sequi consectetur temporibus fugit quod a repellendus, ab beatae cum! Suscipit harum velit, eveniet maiores debitis necessitatibus accusamus perspiciatis esse voluptas similique optio vel pariatur deleniti magnam dolorem, iste quisquam neque expedita illo vitae unde labore. Ratione sapiente blanditiis quis similique error beatae voluptatum animi dolor molestiae laudantium illo doloribus consectetur nemo aspernatur, possimus ab perferendis molestias facere dolore labore perspiciatis placeat obcaecati. Amet iusto rem itaque iste velit.
-  </div>
-
-  <div class="text">
-    1.2.Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur aliquam dolores eligendi perspiciatis ad iure, autem expedita? Nostrum repudiandae corrupti laudantium dolores perferendis officiis sit similique eos. Totam asperiores perspiciatis architecto dicta maxime delectus amet possimus impedit, tempora sequi illum cupiditate praesentium, dolor dignissimos consequatur! Aliquid, deserunt reprehenderit? Dolorum sit adipisci distinctio explicabo aut totam corrupti, dolores ut nobis obcaecati ullam quas tempore at quo culpa consectetur reprehenderit praesentium. Alias, quisquam dolorem excepturi similique culpa provident neque? Facere veritatis laudantium recusandae, exercitationem dolorem placeat facilis quas quam aliquid eveniet blanditiis minus beatae quis, repellat ipsum nobis illum cum nesciunt sunt!
-  </div>
-
-  <div class="text">
-    1.3. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente, ducimus?
-  </div>
-  
-  <h3>
-    Термины и определения
-  </h3>
-  <div class="text">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut necessitatibus minus commodi eligendi molestiae fugiat assumenda tenetur in deleniti. Dolore dicta illum dolorem qui itaque, cumque, repellat veniam ratione ab illo esse excepturi tempora iure, consequatur iste nostrum nobis. Nesciunt aspernatur ratione voluptatem dicta veritatis laudantium, accusantium quos recusandae omnis harum quisquam explicabo officiis excepturi ex, sunt provident ad iste dolorum maxime vel pariatur laborum assumenda! Sunt perferendis eos iure.
-  </div>
-</div>
-
-</mat-dialog-content>
