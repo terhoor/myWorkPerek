@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { MatNativeDateModule } from '@angular/material';
 import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
+import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-info.component';
 
 
 
@@ -35,7 +36,7 @@ import { RegistrationAccessPageComponent } from './registration-access-page/regi
     CodeAccessPageComponent,
     RegistrationPageComponent,
     RegistrationAccessPageComponent,
-  
+    PopupInfoComponent,
 
   ],
   imports: [
@@ -50,6 +51,9 @@ import { RegistrationAccessPageComponent } from './registration-access-page/regi
   ],
   exports: [
     PhoneMaskDirective
+  ],
+  entryComponents: [
+    PopupInfoComponent
   ],
   providers: [OtherDataService],
   bootstrap: [AppComponent]
