@@ -4,15 +4,34 @@
   text-align: center;
 }
 
-.my-ul li {
-  padding: 5px 0px;
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
 }
 
 .my-ul li {
+  padding: 5px 0px;
   list-style: none;
   padding-left: 30px;
   position: relative;
+  margin-bottom: 15px;
+  display: inline-block;
+
 }
+
+
+.btn-next {
+  width: 100vw;
+}
+
 
 i.icon-green {
   position: absolute;

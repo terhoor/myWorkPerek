@@ -22,7 +22,7 @@
   <li><i class="material-icons icon-green">
       check_circle
       </i>
-      <div class="text">Скидка до 50% по купонам-чекам <span>Подробнее</span>
+      <div class="text">Скидка до 50% по купонам-чекам <span class="link-green" (click)="openDialog('coupon')">Подробнее</span>
       </div>
     </li>
   <li>
@@ -34,4 +34,4 @@
     </li>
 </ul>
 
-<app-btn-next routerLink="/consent">Продолжить</app-btn-next>
+<app-btn-next class="btn-next" routerLink="/consent">Продолжить</app-btn-next>
