@@ -59,4 +59,9 @@ export class ConsentPageComponent implements OnInit {
       this.router.navigate(['/code']);
     }
   }
+
+
+  openDialog(strInfo) {
+    this.otherDataService.openDialog(strInfo);
+  }
 }

@@ -22,13 +22,13 @@
       <div class="box-checkbox">
         <mat-checkbox class="padd" [formControlName]="'checkbox1'"></mat-checkbox>
         <label>
-          Я согласен(на) с <span class="green">Правилами клуба</span>
+          Я согласен(на) с <span class="link-green" (click)="openDialog('club-rules')">Правилами клуба</span>
         </label>
       </div>
       <div class="box-checkbox">
         <mat-checkbox class="padd" [formControlName]="'checkbox2'"></mat-checkbox>
         <label>Я согласен(на) с
-          <span class="green">Соглашением на обработку и передачу персональных данных</span>
+          <span class="link-green" (click)="openDialog('data-processing')">Соглашением на обработку и передачу персональных данных</span>
         </label>
       </div>
     </div>
