@@ -27,6 +27,10 @@
 
 }
 
+.my-ul li:last-child {
+  margin-bottom: 0;
+}
+
 
 .btn-next {
   width: 100vw;

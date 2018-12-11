@@ -27,6 +27,10 @@ li {
   
 }
 
+li:last-child {
+  margin-bottom: 0;
+}
+
 i.icon-green {
   position: absolute;
   left: -10px;
