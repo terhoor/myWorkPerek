@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OtherDataService } from '../shared/services/other-data.service';
 
 @Component({
   selector: 'app-registration-access-page',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationAccessPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private otherDataService: OtherDataService
+  ) { }
 
   ngOnInit() {
   }
 
+
+  openDialog(strInfo) {
+    this.otherDataService.openDialog(strInfo);
+  }
 }

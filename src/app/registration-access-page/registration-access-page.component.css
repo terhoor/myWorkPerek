@@ -8,13 +8,23 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   
+}
+
+.my-ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 li {
   list-style: none;
   padding-left: 30px;
   position: relative;
+  margin-bottom: 15px;
+  display: inline-block;
+  
 }
 
 i.icon-green {
