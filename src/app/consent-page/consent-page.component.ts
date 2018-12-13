@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class ConsentPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
     private otherDataService: OtherDataService
   ) { }
@@ -28,7 +29,8 @@ export class ConsentPageComponent implements OnInit {
 
     }
     this.consent = this.fb.group({
-      phone: [lastNumber, [Validators.required,
+      phone: [lastNumber, [
+        Validators.required,
         Validators.minLength(15),
         Validators.maxLength(15)
       ]],
@@ -38,16 +40,17 @@ export class ConsentPageComponent implements OnInit {
 
     this.onChanges();
 
+
   }
 
   onChanges() {
     const form = this.consent;
     this.consent.valueChanges.subscribe(() => {
-      if (this.consent.controls['phone'].value.length > 15) {
-        this.consent.patchValue({
-          'phone': this.consent.controls['phone'].value.slice(0, 15)
-        });
-      }
+      // if (this.consent.controls['phone'].value.length > 15) {
+      //   this.consent.patchValue({
+      //     'phone': this.consent.controls['phone'].value.slice(0, 15)
+      //   });
+      // }
       this.isValidForm = form.valid && form.controls['checkbox1'].value === true && form.controls['checkbox2'].value === true;
     });
   }
@@ -55,6 +58,7 @@ export class ConsentPageComponent implements OnInit {
   onSubmit() {
     if (this.isValidForm) {
       const clearNumber = '+7' + this.consent.controls['phone'].value.replace(/\D/g, '');
+
       this.otherDataService.phoneNumber.next(clearNumber);
       this.router.navigate(['/code']);
     }

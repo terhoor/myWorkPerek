@@ -19,7 +19,6 @@
         <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
           Отправить смс с кодом повторно
         </a>
-        <!-- <div>Осталось {{attempt}} попыток</div> -->
       </div>
       <div *ngIf="attempt === 0" class="warning">
         Превышен лимин попыток

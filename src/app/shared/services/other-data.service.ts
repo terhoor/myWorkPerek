@@ -39,14 +39,18 @@ export class OtherDataService {
 
   // при настройке api изменить с все api
 
+  getWordsForChange() {
+    return this.httpService.get('../assets/words.json');
+  }
+
   getCheckCode(): Observable<Object> {
     return this.httpService.get('../assets/code.json');
 
   }
 
-  postFirstRequestForCreateNewCard() {
-    return this.httpService.post('/api/v5/signup/new/step1');
-  }
+  // postFirstRequestForCreateNewCard() {
+  //   return this.httpService.post('/api/v5/signup/new/step1');
+  // }
 
 
 }
