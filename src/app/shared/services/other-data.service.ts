@@ -25,16 +25,6 @@ export class OtherDataService {
     }
   }
 
-  // при настройке api изменить с все api
-
-  getCheckCode(): Observable<Object> {
-    return this.httpService.get('../assets/code.json');
-
-  }
-
-  
-
-
   openDialog(strInfo): void {
     this.dialog.open(PopupInfoComponent, {
       width: '100vw',
@@ -46,5 +36,17 @@ export class OtherDataService {
     });
 
   }
+
+  // при настройке api изменить с все api
+
+  getCheckCode(): Observable<Object> {
+    return this.httpService.get('../assets/code.json');
+
+  }
+
+  postFirstRequestForCreateNewCard() {
+    return this.httpService.post('/api/v5/signup/new/step1');
+  }
+
 
 }

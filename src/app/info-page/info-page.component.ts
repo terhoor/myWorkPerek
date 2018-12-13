@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { OtherDataService } from '../shared/services/other-data.service';
 
 @Component({
-  selector: 'app-info',
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.css']
+  selector: 'app-info-page',
+  templateUrl: './info-page.component.html',
+  styleUrls: ['./info-page.component.css']
 })
-export class InfoComponent implements OnInit {
+export class InfoPageComponent implements OnInit {
 
   constructor(
     private otherDataService: OtherDataService

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MainLayoutComponent } from './shared/layouts/main-layout/main-layout.component';
 import { CardComponent } from './shared/components/card/card.component';
-import { InfoComponent } from './info/info.component';
+import { InfoPageComponent } from './info-page/info-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BtnNextComponent } from './shared/components/buttons/btn-next/btn-next.component';
 import { BtnBackComponent } from './shared/components/buttons/btn-back/btn-back.component';
@@ -28,7 +28,7 @@ import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-i
     AppComponent,
     MainLayoutComponent,
     CardComponent,
-    InfoComponent,
+    InfoPageComponent,
     BtnNextComponent,
     BtnBackComponent,
     ConsentPageComponent,
