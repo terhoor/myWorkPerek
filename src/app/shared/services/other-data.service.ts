@@ -10,6 +10,7 @@ import { PopupWarningComponent } from '../components/popup/popup-warning/popup-w
 export class OtherDataService {
   phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
   accessForMerge: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  numberCard: BehaviorSubject<string> = new BehaviorSubject('0000000000000000') ;
 
   constructor(
     private httpService: HttpClient,

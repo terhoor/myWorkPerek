@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material';
 import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
 import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-info.component';
 import { PopupWarningComponent } from './shared/components/popup/popup-warning/popup-warning.component';
+import { MapDisplayCardPipe } from './shared/components/pipes/map-display-card.pipe';
 
 
 
@@ -39,6 +40,7 @@ import { PopupWarningComponent } from './shared/components/popup/popup-warning/p
     RegistrationAccessPageComponent,
     PopupInfoComponent,
     PopupWarningComponent,
+    MapDisplayCardPipe,
 
   ],
   imports: [

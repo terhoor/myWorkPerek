@@ -1,4 +1,31 @@
+.container-card {
+  display: flex;
+  justify-content: center;
+}
+
 .box-card {
   text-align: center;
-  padding: 10px 0px;
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.box-card img {
+  width: 100%;
+}
+
+.card {
+  color: white;
+  font-size: 22px;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}
+
+@media (max-width: 395px) {
+  .card {
+    font-size: 16px;
+  }
 }
