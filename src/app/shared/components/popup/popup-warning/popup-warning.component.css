@@ -1,0 +1,29 @@
+.box-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+
+}
+
+.box-info h3 {
+  font-size: 18px;
+}
+
+.call-us {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  max-width: 80%;
+}
+
+.call-us * {
+  margin-bottom: 8px;
+}
+
+.call-us .phone-number {
+  font-weight: bold;
+  background-color: rgba(196, 199, 194, 0.609);
+  padding: 10px 0px;
+}

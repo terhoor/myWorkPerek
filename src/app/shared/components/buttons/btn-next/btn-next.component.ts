@@ -18,7 +18,6 @@ export class BtnNextComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.isValid);
   }
 
 }

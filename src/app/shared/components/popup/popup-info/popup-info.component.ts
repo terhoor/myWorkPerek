@@ -12,7 +12,7 @@ export class PopupInfoComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PopupInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public strInfo: string ) {}
-    
+
     ngOnInit() {
       this.whatShow = this.strInfo;
     }

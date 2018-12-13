@@ -59,13 +59,22 @@ export class ConsentPageComponent implements OnInit {
     if (this.isValidForm) {
       const clearNumber = '+7' + this.consent.controls['phone'].value.replace(/\D/g, '');
 
-      this.otherDataService.phoneNumber.next(clearNumber);
-      this.router.navigate(['/code']);
+      if (!true) {
+        this.openDialogWarning();
+      } else {
+        this.otherDataService.phoneNumber.next(clearNumber);
+        this.router.navigate(['/code']);
+
+      }
+
     }
   }
 
 
-  openDialog(strInfo) {
+  openDialog(strInfo): void {
     this.otherDataService.openDialog(strInfo);
+  }
+  openDialogWarning(): void {
+    this.otherDataService.openDialogWarning();
   }
 }

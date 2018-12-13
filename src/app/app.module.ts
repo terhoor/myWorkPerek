@@ -20,6 +20,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { MatNativeDateModule } from '@angular/material';
 import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
 import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-info.component';
+import { PopupWarningComponent } from './shared/components/popup/popup-warning/popup-warning.component';
 
 
 
@@ -37,6 +38,7 @@ import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-i
     RegistrationPageComponent,
     RegistrationAccessPageComponent,
     PopupInfoComponent,
+    PopupWarningComponent,
 
   ],
   imports: [
@@ -47,13 +49,14 @@ import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-i
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   exports: [
-    PhoneMaskDirective
+    PhoneMaskDirective,
   ],
   entryComponents: [
-    PopupInfoComponent
+    PopupInfoComponent,
+    PopupWarningComponent,
   ],
   providers: [OtherDataService],
   bootstrap: [AppComponent]

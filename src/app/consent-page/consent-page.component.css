@@ -1,6 +1,3 @@
-.my-form {
-}
-
 .box-number {
   padding-top: 15px;
   text-align: center;
@@ -26,12 +23,12 @@
   position: relative;
 }
 
-.num-before::before {
+/* .num-before::before {
   position: absolute;
   left: -30px;
   z-index: 1000;
   content: '+7';
-}
+} */
 
 .green {
   color: green;

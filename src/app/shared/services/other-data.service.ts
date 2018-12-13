@@ -4,10 +4,12 @@ import { Injectable } from '@angular/core';
 import { post } from 'selenium-webdriver/http';
 import { MatDialog } from '@angular/material';
 import { PopupInfoComponent } from '../components/popup/popup-info/popup-info.component';
+import { PopupWarningComponent } from '../components/popup/popup-warning/popup-warning.component';
 
 @Injectable()
 export class OtherDataService {
   phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
+  accessForMerge: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private httpService: HttpClient,
@@ -35,6 +37,22 @@ export class OtherDataService {
       data: strInfo
     });
 
+  }
+
+  openDialogWarning(): void {
+    const dialogRefWarning = this.dialog.open(PopupWarningComponent, {
+      width: '100vw',
+      maxWidth: '100vw',
+      position: {
+        top: 'auto'
+      }
+    });
+
+    dialogRefWarning.afterClosed().subscribe(answer => {
+      answer = !!answer;
+        this.accessForMerge.next(answer);
+        console.log(this.accessForMerge.getValue());
+    });
   }
 
   // при настройке api изменить с все api
