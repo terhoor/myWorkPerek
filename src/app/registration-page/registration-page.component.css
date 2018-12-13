@@ -20,3 +20,11 @@
   width: 220px;
   min-width: 150px;
 }
+
+.warning {
+  color: red;
+}
+
+.small {
+  font-size: 12px;
+}

@@ -12,6 +12,11 @@
       <mat-form-field>
         <input matInput placeholder="Код подтверждения" [formControlName]="'code'" (keypress)="checkChar($event)">
       </mat-form-field>
+      <div class="warning" *ngIf="formCode.get('code').touched && formCode.get('code').invalid">
+        <span>
+          Код подтверждения неверный
+        </span>
+      </div>
       <div class="text-repeat" *ngIf="!formCode.disabled">
         <div class="text" *ngIf="timer !== 0">
           Отправить SMS с кодом повторно можно будет через {{timer}} секунда
