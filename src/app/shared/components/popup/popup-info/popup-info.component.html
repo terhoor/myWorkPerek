@@ -1,5 +1,5 @@
 <div class="box-info">
-  <div class="coupon" *ngIf="whatShow === 'coupon'">
+ <!--  <div class="coupon" *ngIf="whatShow === 'coupon'">
     <h3>
       Что такое купон-чек?
     </h3>
@@ -125,8 +125,12 @@
 
   </div>
 
+ -->
 
-
+ <h4>{{info.title}}</h4>
+ <div class="text">
+   {{info.text}}
+ </div>
   <div class="close" (click)="close()">
     &#10006;
   </div>

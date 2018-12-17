@@ -22,6 +22,7 @@ import { RegistrationAccessPageComponent } from './registration-access-page/regi
 import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-info.component';
 import { PopupWarningComponent } from './shared/components/popup/popup-warning/popup-warning.component';
 import { MapDisplayCardPipe } from './shared/components/pipes/map-display-card.pipe';
+import { ApiService } from './shared/services/api.service';
 
 
 
@@ -60,7 +61,10 @@ import { MapDisplayCardPipe } from './shared/components/pipes/map-display-card.p
     PopupInfoComponent,
     PopupWarningComponent,
   ],
-  providers: [OtherDataService],
+  providers: [
+    OtherDataService,
+    ApiService,
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

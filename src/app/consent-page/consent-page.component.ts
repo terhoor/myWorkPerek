@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-consent-page',
@@ -19,7 +20,8 @@ export class ConsentPageComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private otherDataService: OtherDataService
+    private otherDataService: OtherDataService,
+    private apiService: ApiService
   ) { }
 
   ngOnInit() {
@@ -71,10 +73,24 @@ export class ConsentPageComponent implements OnInit {
   }
 
 
-  openDialog(strInfo): void {
-    this.otherDataService.openDialog(strInfo);
-  }
+  // openDialog(strInfo): void {
+  //   this.otherDataService.openDialog(strInfo);
+  // }
   openDialogWarning(): void {
     this.otherDataService.openDialogWarning();
   }
+
+  showPopupRule() {
+    this.apiService.getRules().subscribe(rule => {
+      this.otherDataService.openDialog(rule);
+    });
+  }
+
+  showAgreement() {
+    this.apiService.getAgreement().subscribe(agreement => {
+      this.otherDataService.openDialog(agreement);
+    });
+  }
+
+
 }
