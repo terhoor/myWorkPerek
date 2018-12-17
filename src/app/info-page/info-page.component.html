@@ -6,32 +6,34 @@
 
 <hr class="gray-line">
 
-<ul class="my-ul">
-  <li>
-    <i class="material-icons icon-green">
-    check_circle
-    </i>
-    <div class="text">1 балл за каждые 10 рублей в чеке</div>
-  </li>
-  <li><i class="material-icons icon-green">
+<div class="container-block">
+  <ul class="my-ul">
+    <li>
+      <i class="material-icons icon-green">
       check_circle
       </i>
-      <div class="text">Дополнительные баллы в день рождения и за 2 дня до него
-      </div>
+      <div class="text">1 балл за каждые 10 рублей в чеке</div>
     </li>
-  <li><i class="material-icons icon-green">
-      check_circle
-      </i>
-      <div class="text">Скидка до 50% по купонам-чекам <span class="link-green" (click)="openDialog('coupon')">Подробнее</span>
-      </div>
-    </li>
-  <li>
-    <i class="material-icons icon-green">
-      check_circle
-      </i>
-      <div class="text">Понятный способ тратить. 10 баллов = 1 рубль.
-      </div>
-    </li>
-</ul>
-
-<app-btn-next class="btn-next" routerLink="/consent">Продолжить</app-btn-next>
+    <li><i class="material-icons icon-green">
+        check_circle
+        </i>
+        <div class="text">Дополнительные баллы в день рождения и за 2 дня до него
+        </div>
+      </li>
+    <li><i class="material-icons icon-green">
+        check_circle
+        </i>
+        <div class="text">Скидка до 50% по купонам-чекам <span class="link-green" (click)="openDialog('coupon')">Подробнее</span>
+        </div>
+      </li>
+    <li>
+      <i class="material-icons icon-green">
+        check_circle
+        </i>
+        <div class="text">Понятный способ тратить. 10 баллов = 1 рубль.
+        </div>
+      </li>
+  </ul>
+  
+  <app-btn-next class="btn-next" routerLink="/consent">Продолжить</app-btn-next>
+</div>
