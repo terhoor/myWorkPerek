@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-registration-page',
@@ -13,15 +14,16 @@ export class RegistrationPageComponent implements OnInit {
   formReg: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
     ) {
 
    }
 
   ngOnInit() {
     this.formReg = this.fb.group({
-      name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       birthday: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]]
 
@@ -34,7 +36,17 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   regUser() {
-    this.router.navigate(['/register-success']);
+    const valueUser = this.formReg.value;
+    const dateUser = valueUser.birthday;
+    valueUser.birthday = dateUser.getFullYear() + '.' + (dateUser.getMonth() + 1) + '.' + dateUser.getDate();
+    console.log(valueUser);
+    this.apiService.registerUser(valueUser).subscribe(dataTokens => {
+      if (dataTokens.accessToken && dataTokens.refreshToken) {
+        this.router.navigate(['/register-success']);
+      } else {
+        console.log('error');
+      }
+    });
   }
 
 }

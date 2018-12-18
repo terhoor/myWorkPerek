@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { MyCode } from '../shared/interfaces/code.model';
 import { Router } from '@angular/router';
+import { ApiService } from '../shared/services/api.service';
 
 @Component({
   selector: 'app-code-access-page',
@@ -23,7 +24,8 @@ export class CodeAccessPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
     ) { }
 
   ngOnInit() {
@@ -76,10 +78,12 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   checkCode() {
-    const valueForm = this.formCode.value;
-    this.otherDataService.getCheckCode().subscribe((objWithCode: MyCode) => {
-      if (objWithCode.code === valueForm.code) {
+    const valueFormCode = this.formCode.value.code;
+    this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
+
+      if (res.success) {
         this.router.navigate(['/registration']);
+
       } else {
         this.doAttempt();
       }

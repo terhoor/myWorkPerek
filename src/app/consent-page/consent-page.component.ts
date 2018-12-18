@@ -48,27 +48,32 @@ export class ConsentPageComponent implements OnInit {
   onChanges() {
     const form = this.consent;
     this.consent.valueChanges.subscribe(() => {
-      // if (this.consent.controls['phone'].value.length > 15) {
-      //   this.consent.patchValue({
-      //     'phone': this.consent.controls['phone'].value.slice(0, 15)
-      //   });
-      // }
       this.isValidForm = form.valid && form.controls['checkbox1'].value === true && form.controls['checkbox2'].value === true;
     });
   }
 
   onSubmit() {
+    const funcNextStep = clearNumber => {
+      this.otherDataService.phoneNumber.next(clearNumber);
+      this.router.navigate(['/code']);
+    };
+    let nextStep: boolean;
     if (this.isValidForm) {
-      const clearNumber = '+7' + this.consent.controls['phone'].value.replace(/\D/g, '');
-
-      if (!true) {
-        this.openDialogWarning();
-      } else {
-        this.otherDataService.phoneNumber.next(clearNumber);
-        this.router.navigate(['/code']);
-
-      }
-
+      const phone = this.consent.controls['phone'].value;
+      const clearNumber = '+7' + phone.replace(/\D/g, '');
+      this.apiService.checkPhone(clearNumber).subscribe(dataInfo => {
+        nextStep = !!dataInfo.token;
+        if (nextStep && !dataInfo.hasActiveCards) {
+          funcNextStep(clearNumber);
+        } else if (!nextStep && dataInfo.hasActiveCards) {
+          this.otherDataService.openDialogWarning();
+          this.otherDataService.accessForMerge.subscribe(valueFlag => {
+            if (valueFlag) {
+              funcNextStep(clearNumber);
+            }
+          });
+        }
+      });
     }
   }
 
@@ -76,6 +81,7 @@ export class ConsentPageComponent implements OnInit {
   // openDialog(strInfo): void {
   //   this.otherDataService.openDialog(strInfo);
   // }
+
   openDialogWarning(): void {
     this.otherDataService.openDialogWarning();
   }

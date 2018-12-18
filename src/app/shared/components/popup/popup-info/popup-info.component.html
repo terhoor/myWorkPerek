@@ -127,9 +127,8 @@
 
  -->
 
- <h4>{{info.title}}</h4>
- <div class="text">
-   {{info.text}}
+ <h4 [innerHTML]="info.title"></h4>
+ <div class="text" [innerHTML]="info.text">
  </div>
   <div class="close" (click)="close()">
     &#10006;

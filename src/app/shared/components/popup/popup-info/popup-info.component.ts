@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-interface infoBlock {
+interface InfoBlock {
   title: string;
   text: string;
 }
@@ -16,10 +16,9 @@ export class PopupInfoComponent implements OnInit {
   whatShow: string;
   constructor(
     public dialogRef: MatDialogRef<PopupInfoComponent>,
-    @Inject(MAT_DIALOG_DATA) public info: infoBlock ) {}
+    @Inject(MAT_DIALOG_DATA) public info: InfoBlock ) {}
 
     ngOnInit() {
-      // this.whatShow = this.strInfo;
     }
 
     close(): void {

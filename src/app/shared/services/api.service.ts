@@ -72,6 +72,7 @@ export class ApiService {
     } else {
       this._phone = '+7' + phone;
     }
+    console.log(this._phone);
     const httpOptions = {
       headers: this.getHeaders(new HttpHeaders({
         'X-Authorization': 'Bearer ' + this.deviceAccessToken
@@ -126,6 +127,10 @@ export class ApiService {
       }));
     } else {
       console.log('else');
+      console.log({
+        'token': this.codeToken,
+        'code': code
+      });
       codeObserver = this.httpClient.post(this.getUrl('/api/v5/signup/new/step2'), {
         'token': this.codeToken,
         'code': code
@@ -133,6 +138,7 @@ export class ApiService {
         this.registerToken = result.token;
       }));
     }
+
     return codeObserver.pipe(
       map((response: any) => {
         return { success: true };
@@ -144,6 +150,7 @@ export class ApiService {
   }
 
   public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }) {
+
     const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
     const data = Object.assign({ token: this.registerToken }, userData);
     return this.httpClient.post(this.getUrl('/api/v5/signup/new/step3'), data, httpOptions).pipe(tap((result: any) => {
