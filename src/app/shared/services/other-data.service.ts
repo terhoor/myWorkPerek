@@ -8,12 +8,11 @@ import { PopupWarningComponent } from '../components/popup/popup-warning/popup-w
 
 @Injectable()
 export class OtherDataService {
-  phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
+  // phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
   accessForMerge: BehaviorSubject<boolean> = new BehaviorSubject(false);
   numberCard: BehaviorSubject<string> = new BehaviorSubject('0000000000000000') ;
 
   constructor(
-    private httpService: HttpClient,
     public dialog: MatDialog
     ) {
 
@@ -55,21 +54,5 @@ export class OtherDataService {
         console.log(this.accessForMerge.getValue());
     });
   }
-
-  // при настройке api изменить с все api
-
-  getWordsForChange() {
-    return this.httpService.get('../assets/words.json');
-  }
-
-  getCheckCode(): Observable<Object> {
-    return this.httpService.get('../assets/code.json');
-
-  }
-
-  // postFirstRequestForCreateNewCard() {
-  //   return this.httpService.post('/api/v5/signup/new/step1');
-  // }
-
 
 }

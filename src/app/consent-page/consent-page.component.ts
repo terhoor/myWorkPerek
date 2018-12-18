@@ -25,13 +25,9 @@ export class ConsentPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let lastNumber = this.otherDataService.phoneNumber.getValue();
-    if (lastNumber !== '') {
-      lastNumber = this.otherDataService.changeNumberDecore(lastNumber.slice(2));
 
-    }
     this.consent = this.fb.group({
-      phone: [lastNumber, [
+      phone: [this.apiService.phone, [
         Validators.required,
         Validators.minLength(15),
         Validators.maxLength(15)
@@ -54,7 +50,7 @@ export class ConsentPageComponent implements OnInit {
 
   onSubmit() {
     const funcNextStep = clearNumber => {
-      this.otherDataService.phoneNumber.next(clearNumber);
+      this.apiService.setPhone(clearNumber);
       this.router.navigate(['/code']);
     };
     let nextStep: boolean;
@@ -77,10 +73,6 @@ export class ConsentPageComponent implements OnInit {
     }
   }
 
-
-  // openDialog(strInfo): void {
-  //   this.otherDataService.openDialog(strInfo);
-  // }
 
   openDialogWarning(): void {
     this.otherDataService.openDialogWarning();

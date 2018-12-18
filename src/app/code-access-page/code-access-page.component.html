@@ -12,9 +12,9 @@
       <mat-form-field>
         <input matInput placeholder="Код подтверждения" [formControlName]="'code'" (keypress)="checkChar($event)">
       </mat-form-field>
-      <div class="warning" *ngIf="formCode.get('code').touched && formCode.get('code').invalid">
+      <div class="warning" *ngIf="formCode.get('code').errors?.incorrect">
         <span>
-          Код подтверждения неверный
+          Код подтверждения введен некорректно
         </span>
       </div>
       <div class="text-repeat" *ngIf="!formCode.disabled">

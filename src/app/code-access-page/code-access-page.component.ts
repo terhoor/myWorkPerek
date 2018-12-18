@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
-import { MyCode } from '../shared/interfaces/code.model';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 
@@ -12,14 +11,13 @@ import { ApiService } from '../shared/services/api.service';
 })
 export class CodeAccessPageComponent implements OnInit {
 
-  private myCode: string;
   private attempt: number = 3;
   timer: number = 5;
   phoneNumber: string;
   nextAccess: boolean;
   timerEnd: boolean = false;
   formCode = this.fb.group({
-    code: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]]
+    code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
   });
   constructor(
     private fb: FormBuilder,
@@ -29,9 +27,7 @@ export class CodeAccessPageComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.otherDataService.phoneNumber.subscribe((numberStr) => {
-      this.phoneNumber = this.otherDataService.changeNumberDecore(numberStr);
-    });
+    this.phoneNumber = this.otherDataService.changeNumberDecore(this.apiService.phone);
 
     this.formCode.controls['code'].valueChanges.subscribe(() => {
       this.nextAccess = true;
@@ -42,7 +38,7 @@ export class CodeAccessPageComponent implements OnInit {
 
   timerTick(): void {
     const myTimer = setInterval(() => {
-      
+
       this.timer--;
       if (this.timer === 0) {
         clearTimeout(myTimer);
@@ -74,18 +70,23 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   checkChar(event): boolean {
+    console.log(this.formCode.controls['code']);
+
     return event.charCode >= 48 && event.charCode <= 57;
   }
 
   checkCode() {
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
-
+      
       if (res.success) {
         this.router.navigate(['/registration']);
 
       } else {
         this.doAttempt();
+        console.log(res);
+        this.formCode.controls['code'].setErrors({'incorrect': true});
+        console.log(this.formCode.controls['code']);
       }
     });
   }

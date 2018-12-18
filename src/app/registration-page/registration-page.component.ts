@@ -39,7 +39,6 @@ export class RegistrationPageComponent implements OnInit {
     const valueUser = this.formReg.value;
     const dateUser = valueUser.birthday;
     valueUser.birthday = dateUser.getFullYear() + '.' + (dateUser.getMonth() + 1) + '.' + dateUser.getDate();
-    console.log(valueUser);
     this.apiService.registerUser(valueUser).subscribe(dataTokens => {
       if (dataTokens.accessToken && dataTokens.refreshToken) {
         this.router.navigate(['/register-success']);
