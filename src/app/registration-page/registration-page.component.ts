@@ -41,7 +41,11 @@ export class RegistrationPageComponent implements OnInit {
     valueUser.birthday = dateUser.getFullYear() + '.' + (dateUser.getMonth() + 1) + '.' + dateUser.getDate();
     this.apiService.registerUser(valueUser).subscribe(dataTokens => {
       if (dataTokens.accessToken && dataTokens.refreshToken) {
-        this.router.navigate(['/register-success']);
+        this.router.navigate(['/register-success'], {
+          queryParams: {
+            access: true
+          }
+        });
       } else {
         console.log('error');
       }

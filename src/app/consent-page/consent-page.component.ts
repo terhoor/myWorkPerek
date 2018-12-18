@@ -25,9 +25,14 @@ export class ConsentPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    let phoneNum = this.apiService.phone || '';
+
+    if (phoneNum !== '') {
+      phoneNum = this.otherDataService.changeNumberDecore(phoneNum).slice(2).trim();
+    }
 
     this.consent = this.fb.group({
-      phone: [this.apiService.phone, [
+      phone: [phoneNum, [
         Validators.required,
         Validators.minLength(15),
         Validators.maxLength(15)
@@ -51,7 +56,11 @@ export class ConsentPageComponent implements OnInit {
   onSubmit() {
     const funcNextStep = clearNumber => {
       this.apiService.setPhone(clearNumber);
-      this.router.navigate(['/code']);
+      this.router.navigate(['/code'], {
+        queryParams: {
+          access: true
+        }
+      });
     };
     let nextStep: boolean;
     if (this.isValidForm) {

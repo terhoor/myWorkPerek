@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 
 @Component({
@@ -11,8 +11,8 @@ import { ApiService } from '../shared/services/api.service';
 })
 export class CodeAccessPageComponent implements OnInit {
 
-  private attempt: number = 3;
-  timer: number = 5;
+  private attempt: number = this.apiService.repeatCount;
+  timer: number = this.apiService.repeatTime;
   phoneNumber: string;
   nextAccess: boolean;
   timerEnd: boolean = false;
@@ -23,6 +23,7 @@ export class CodeAccessPageComponent implements OnInit {
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
     private router: Router,
+    private route: ActivatedRoute,
     private apiService: ApiService
     ) { }
 
@@ -70,23 +71,22 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   checkChar(event): boolean {
-    console.log(this.formCode.controls['code']);
-
     return event.charCode >= 48 && event.charCode <= 57;
   }
 
   checkCode() {
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
-      
-      if (res.success) {
-        this.router.navigate(['/registration']);
 
+      if (res.success) {
+        this.router.navigate(['/registration'], {
+          queryParams: {
+            access: true
+          }
+        });
       } else {
         this.doAttempt();
-        console.log(res);
         this.formCode.controls['code'].setErrors({'incorrect': true});
-        console.log(this.formCode.controls['code']);
       }
     });
   }
