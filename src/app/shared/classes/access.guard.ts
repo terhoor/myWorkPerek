@@ -21,7 +21,8 @@ export class AccessGuard implements CanActivate {
           {
             relativeTo: this.route,
             queryParams: { 'access': null },
-            queryParamsHandling: 'merge'
+            queryParamsHandling: 'merge',
+            replaceUrl: true
           });
       });
       return of(true);
