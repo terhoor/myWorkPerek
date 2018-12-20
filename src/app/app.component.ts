@@ -9,7 +9,7 @@ export class AppComponent {
   title = 'edadil';
 
   constructor(private apiService: ApiService) {
-    this.apiService.generateInstanceId('10');
+    this.apiService.generateInstanceId('152');
     this.apiService.signInDevice().subscribe(data => {
       console.log(data);
     });
