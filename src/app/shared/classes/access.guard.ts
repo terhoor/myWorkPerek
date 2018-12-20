@@ -16,6 +16,11 @@ export class AccessGuard implements CanActivate {
     if (route.queryParams['access']) {
       return of(true);
     } else {
+      this.router.navigate(['/info'], {
+        queryParams: {
+          access: false
+        }
+      });
       return of(false);
     }
   }
