@@ -36,9 +36,17 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   regUser() {
+
     const valueUser = this.formReg.value;
     const dateUser = valueUser.birthday;
-    valueUser.birthday = dateUser.getFullYear() + '.' + (dateUser.getMonth() + 1) + '.' + dateUser.getDate();
+    if (typeof dateUser === 'object') {
+      const year = this.addZero(dateUser.getFullYear());
+      const month = this.addZero(dateUser.getMonth());
+      const day = this.addZero(dateUser.getDate());
+      
+      valueUser.birthday = `${year}.${month}.${day}`;
+    }
+
     this.apiService.registerUser(valueUser).subscribe(dataTokens => {
       if (dataTokens.accessToken && dataTokens.refreshToken) {
         this.router.navigate(['/register-success'], {
@@ -50,6 +58,13 @@ export class RegistrationPageComponent implements OnInit {
         console.log('error');
       }
     });
+  }
+
+   addZero(num: number): string {
+    if (num < 10) {
+    return '0' + num;
+    }
+    return num.toString();
   }
 
 }

@@ -27,8 +27,7 @@ export class AccessGuard implements CanActivate {
       });
       return of(true);
     } else {
-      this.router.navigate(['/info'], {queryParams: {access: null}, queryParamsHandling: 'merge'
-      });
+      this.router.navigate(['/info']);
       return of(false);
     }
   }
