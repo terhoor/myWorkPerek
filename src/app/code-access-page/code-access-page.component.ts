@@ -11,7 +11,7 @@ import { ApiService } from '../shared/services/api.service';
 })
 export class CodeAccessPageComponent implements OnInit {
 
-  private attempt: number = this.apiService.repeatCount;
+  attempt: number = this.apiService.repeatCount;
   timer: number = this.apiService.repeatTime;
   phoneNumber: string;
   nextAccess: boolean;
@@ -79,6 +79,7 @@ export class CodeAccessPageComponent implements OnInit {
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
 
       if (res.success) {
+        this.otherDataService.generateNumberCard();
         this.router.navigate(['/registration'], {
           queryParams: {
             access: true

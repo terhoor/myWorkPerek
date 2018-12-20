@@ -27,6 +27,14 @@ export class OtherDataService {
     }
   }
 
+  generateNumberCard() {
+    const arrCard = [];
+    for (let i = 0; i < 4; i++) {
+      arrCard[i] = String(Math.floor(Math.random() * 9999) + 1000);
+    }
+    this.numberCard.next(arrCard.join(''));
+  }
+
   openDialog(strInfo): void {
     this.dialog.open(PopupInfoComponent, {
       width: '100vw',
