@@ -55,7 +55,7 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   timerReset(): void {
-    this.timer = 30;
+    this.timer = this.apiService.repeatTime;
     this.timerEnd = false;
   }
 
