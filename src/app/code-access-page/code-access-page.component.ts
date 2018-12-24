@@ -55,7 +55,7 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   timerReset(): void {
-    this.timer = 10;
+    this.timer = 30;
     this.timerEnd = false;
   }
 
