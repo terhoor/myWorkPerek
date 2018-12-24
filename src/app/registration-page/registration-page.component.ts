@@ -16,9 +16,9 @@ export class RegistrationPageComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private apiService: ApiService
-    ) {
+  ) {
 
-   }
+  }
 
   ngOnInit() {
     this.formReg = this.fb.group({
@@ -31,7 +31,7 @@ export class RegistrationPageComponent implements OnInit {
 
     this.formReg.statusChanges.subscribe(() => {
       this.nextAccess = this.formReg.valid;
-    })
+    });
 
   }
 
@@ -43,7 +43,7 @@ export class RegistrationPageComponent implements OnInit {
       const year = this.addZero(dateUser.getFullYear());
       const month = this.addZero(dateUser.getMonth());
       const day = this.addZero(dateUser.getDate());
-      
+
       valueUser.birthday = `${year}.${month}.${day}`;
     }
 
@@ -60,9 +60,9 @@ export class RegistrationPageComponent implements OnInit {
     });
   }
 
-   addZero(num: number): string {
+  addZero(num: number): string {
     if (num < 10) {
-    return '0' + num;
+      return '0' + num;
     }
     return num.toString();
   }
