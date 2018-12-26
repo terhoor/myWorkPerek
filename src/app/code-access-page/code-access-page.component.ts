@@ -52,7 +52,7 @@ export class CodeAccessPageComponent implements OnInit {
   timerTick(): void {
     const myTimer = setInterval(() => {
       const valueTimer = this.timer$.getValue() - 1;
-      this.timer$.next(valueTimer;
+      this.timer$.next(valueTimer);
       if (valueTimer === 0) {
         clearTimeout(myTimer);
         this.timerEnd = true;
@@ -86,7 +86,7 @@ export class CodeAccessPageComponent implements OnInit {
     return event.charCode >= 48 && event.charCode <= 57;
   }
 
-  checkCode() {
+  checkCode(): void {
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
 

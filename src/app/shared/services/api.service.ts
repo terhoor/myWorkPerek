@@ -25,7 +25,42 @@ export class ApiService {
   userAccessToken: string; // user access token
   userRefreshToken: string; // user refresh token
   registerToken: string;
-  user: any;
+  // user: any;
+
+  collectDataForApi(): {} {
+    const data = {
+      '_instanceId': this._instanceId,
+      'edadilId': this.edadilId,
+      'deviceId': this.deviceId,
+      '_deviceAccessToken': this._deviceAccessToken,
+      '_deviceRefreshToken': this._deviceRefreshToken,
+      '_userExists': this._userExists,
+      '_phone': this._phone,
+      'codeToken': this.codeToken,
+      'repeatTime': this.repeatTime,
+      'repeatCount': this.repeatCount,
+      'userAccessToken': this.userAccessToken,
+      'userRefreshToken': this.userRefreshToken,
+      'registerToken': this.registerToken,
+    };
+    return data;
+  }
+
+  saveDataInLocSt() {
+    this.otherDataService.saveInLocalStorage(Steps.dataSave, this.collectDataForApi());
+  }
+
+  getDataInLocSt() {
+    const data = this.otherDataService.takeInLocalStorage(Steps.dataSave) || null;
+    if (data === null) {
+      return;
+    }
+    const keys = Object.keys(data);
+    console.log(keys);
+    keys.forEach((key) => {
+      this[key] = data[key];
+    });
+  }
 
   get instanceId(): string {
     return this._instanceId;
@@ -51,12 +86,18 @@ export class ApiService {
     private httpClient: HttpClient,
     private otherDataService: OtherDataService
     ) {
-      let phoneNum = this.otherDataService.takeInLocalStorage(Steps.step1);
-      console.log(phoneNum);
-      if (phoneNum !== null) {
-        phoneNum = this.otherDataService.changeNumberClear(phoneNum.phone);
-        this.setPhone(phoneNum);
-      }
+      // let phoneNum = this.otherDataService.takeInLocalStorage(Steps.step1);
+      // console.log(phoneNum);
+      // if (phoneNum !== null) {
+      //   phoneNum = this.otherDataService.changeNumberClear(phoneNum.phone);
+      //   this.setPhone(phoneNum);
+      // }
+      this.getDataInLocSt();
+      if (this.instanceId !== '') {
+        this.generateInstanceId('152');
+        this.signInDevice().subscribe(data => {
+      });
+    }
   }
 
   public signInDevice(): Observable<any> {
@@ -98,6 +139,8 @@ export class ApiService {
         this.codeToken = response.token;
         this.repeatTime = response.repeatAfter;
         this.repeatCount = response.repeatCount;
+        this.saveDataInLocSt();
+
       }),
       catchError((error: HttpErrorResponse) => {
         console.log(error);
@@ -112,6 +155,8 @@ export class ApiService {
               this.codeToken = response.token;
               this.repeatTime = 30;
               this.repeatCount = 10;
+              this.saveDataInLocSt();
+
             })
           );
         }
@@ -145,6 +190,7 @@ export class ApiService {
         this.registerToken = result.token;
       }));
     }
+    this.saveDataInLocSt();
 
     return codeObserver.pipe(
       map((response: any) => {
@@ -163,6 +209,8 @@ export class ApiService {
     return this.httpClient.post(this.getUrl('/api/v5/signup/new/step3'), data, httpOptions).pipe(tap((result: any) => {
       this.userAccessToken = result.accessToken;
       this.userRefreshToken = result.refreshToken;
+      this.saveDataInLocSt();
+
     }));
   }
 

@@ -9,13 +9,7 @@ import { OtherDataService } from './shared/services/other-data.service';
 export class AppComponent {
   title = 'edadil';
 
-  constructor(
-    private apiService: ApiService
-    ) {
-    this.apiService.generateInstanceId('152');
-    this.apiService.signInDevice().subscribe(data => {
-    });
-  }
+  constructor() {}
 }
 
 
