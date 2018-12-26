@@ -13,6 +13,7 @@ export class RegistrationAccessPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    localStorage.clear();
   }
 
 

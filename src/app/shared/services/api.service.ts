@@ -86,12 +86,6 @@ export class ApiService {
     private httpClient: HttpClient,
     private otherDataService: OtherDataService
     ) {
-      // let phoneNum = this.otherDataService.takeInLocalStorage(Steps.step1);
-      // console.log(phoneNum);
-      // if (phoneNum !== null) {
-      //   phoneNum = this.otherDataService.changeNumberClear(phoneNum.phone);
-      //   this.setPhone(phoneNum);
-      // }
       this.getDataInLocSt();
       if (this.instanceId !== '') {
         this.generateInstanceId('152');

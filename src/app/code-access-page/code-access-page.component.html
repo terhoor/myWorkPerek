@@ -8,7 +8,7 @@
   </div>
 
   <div class="code">
-    <form [formGroup]="formCode" (ngSubmit)="checkCode()">
+    <form [formGroup]="formCode" (submit)="checkCode()">
       <mat-form-field>
         <input matInput placeholder="Код подтверждения" [formControlName]="'code'" (keypress)="checkChar($event)">
       </mat-form-field>

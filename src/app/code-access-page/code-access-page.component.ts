@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
 import { switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
-import { merge, combineLatest, BehaviorSubject } from 'rxjs';
+import { merge, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-code-access-page',
   templateUrl: './code-access-page.component.html',
   styleUrls: ['./code-access-page.component.css']
 })
-export class CodeAccessPageComponent implements OnInit {
+export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
   attempt: number = this.apiService.repeatCount;
   timer$: BehaviorSubject<number>;
@@ -20,6 +20,7 @@ export class CodeAccessPageComponent implements OnInit {
   nextAccess: boolean;
   timerEnd: boolean = false;
   formCode: FormGroup;
+  codeTimer$: Subscription;
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
@@ -31,7 +32,7 @@ export class CodeAccessPageComponent implements OnInit {
     const localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
 
     this.formCode = this.fb.group({
-      code: [localData.code || '', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
+      code: [localData.code, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
     });
 
     this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
@@ -39,7 +40,7 @@ export class CodeAccessPageComponent implements OnInit {
 
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
-    merge(this.timer$, this.formCode.controls['code'].valueChanges)
+    this.codeTimer$ = merge(this.timer$, this.formCode.controls['code'].valueChanges)
     .subscribe(() => {
       this.nextAccess = true;
       const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
@@ -47,6 +48,10 @@ export class CodeAccessPageComponent implements OnInit {
     });
 
     this.timerTick();
+  }
+
+  ngOnDestroy() {
+    this.codeTimer$.unsubscribe();
   }
 
   timerTick(): void {
@@ -82,11 +87,15 @@ export class CodeAccessPageComponent implements OnInit {
     }
   }
 
-  checkChar(event): boolean {
-    return event.charCode >= 48 && event.charCode <= 57;
+  checkChar(event) {
+    const numberKey = Number(String.fromCharCode(event.keyCode));
+    if (isNaN(numberKey)) {
+      event.preventDefault();
+    }
   }
 
   checkCode(): void {
+    console.log(234);
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
 
