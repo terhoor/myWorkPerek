@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
 import { switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
-import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
+import { merge, combineLatest, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-code-access-page',
@@ -39,11 +39,7 @@ export class CodeAccessPageComponent implements OnInit {
 
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
-    combineLatest(this.formCode.controls['code'].valueChanges, this.timer$) 
-/*     this.formCode.controls['code'].valueChanges
-    .pipe(
-      withLatestFrom(this.timer$)
-    ) */
+    merge(this.timer$, this.formCode.controls['code'].valueChanges)
     .subscribe(() => {
       this.nextAccess = true;
       const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
