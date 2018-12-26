@@ -3,6 +3,9 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
+import { Steps } from '../shared/steps';
+import { switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-code-access-page',
@@ -12,31 +15,39 @@ import { ApiService } from '../shared/services/api.service';
 export class CodeAccessPageComponent implements OnInit {
 
   attempt: number = this.apiService.repeatCount;
-  timer: number = this.apiService.repeatTime;
+  timer$: BehaviorSubject<number>;
   phoneNumber: string;
   nextAccess: boolean;
   timerEnd: boolean = false;
   formCode: FormGroup;
-  step: string = 'step2';
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
     private router: Router,
-    private route: ActivatedRoute,
     private apiService: ApiService
     ) { }
 
   ngOnInit() {
-    const localData = this.otherDataService.takeInLocalStorage(this.step) || {};
+    const localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
 
     this.formCode = this.fb.group({
       code: [localData.code || '', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
     });
 
+    this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
+
+
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
-    this.formCode.controls['code'].valueChanges.subscribe(() => {
+    combineLatest(this.formCode.controls['code'].valueChanges, this.timer$) 
+/*     this.formCode.controls['code'].valueChanges
+    .pipe(
+      withLatestFrom(this.timer$)
+    ) */
+    .subscribe(() => {
       this.nextAccess = true;
+      const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
+      this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
     });
 
     this.timerTick();
@@ -44,9 +55,9 @@ export class CodeAccessPageComponent implements OnInit {
 
   timerTick(): void {
     const myTimer = setInterval(() => {
-
-      this.timer--;
-      if (this.timer === 0) {
+      const valueTimer = this.timer$.getValue() - 1;
+      this.timer$.next(valueTimer;
+      if (valueTimer === 0) {
         clearTimeout(myTimer);
         this.timerEnd = true;
 
@@ -60,7 +71,7 @@ export class CodeAccessPageComponent implements OnInit {
   }
 
   timerReset(): void {
-    this.timer = this.apiService.repeatTime;
+    this.timer$.next(this.apiService.repeatTime);
     this.timerEnd = false;
   }
 

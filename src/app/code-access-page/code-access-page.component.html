@@ -18,8 +18,8 @@
         </span>
       </div>
       <div class="text-repeat" *ngIf="!formCode.disabled">
-        <div class="text" *ngIf="timer !== 0">
-          Отправить SMS с кодом повторно можно будет через {{timer}} секунда
+        <div class="text" *ngIf="timer$ | async as timer">
+          Отправить SMS с кодом повторно можно будет через {{timer}} секунд
         </div>
         <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
           Отправить смс с кодом повторно

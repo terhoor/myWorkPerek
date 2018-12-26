@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { post } from 'selenium-webdriver/http';
@@ -18,16 +18,16 @@ export class OtherDataService {
   }
 
   changeNumberDecoration(numberStr): string {
-    if (numberStr.length === 12) {
+    if (numberStr.charAt(0) === '+') {
       return numberStr.replace(/^(\+\d)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '$1 ($2) $3-$4-$5');
-    } else if (numberStr.length === 10) {
+    } else {
       return numberStr.replace(/^(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '($1) $2-$3-$4');
     }
   }
 
   changeNumberClear(numberStr): string {
     let result: string = '';
-    if (numberStr[0] === '+') {
+    if (numberStr.charAt(0) === '+') {
       result = numberStr.replace(/\D/g, '')
     } else {
       result = '+7' + numberStr.replace(/\D/g, '');
@@ -72,7 +72,6 @@ export class OtherDataService {
   }
 
   saveInLocalStorage(step, dataObj): void {
-    console.log(step, dataObj);
     const strData = JSON.stringify(dataObj);
     localStorage.setItem(step, strData);
   }

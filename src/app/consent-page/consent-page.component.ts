@@ -5,6 +5,7 @@ import { OtherDataService } from '../shared/services/other-data.service';
 import { ApiService } from '../shared/services/api.service';
 import { fromEvent } from 'rxjs';
 import { switchMap, debounceTime, tap} from 'rxjs/operators';
+import { Steps } from '../shared/steps';
 
 @Component({
   selector: 'app-consent-page',
@@ -14,7 +15,6 @@ import { switchMap, debounceTime, tap} from 'rxjs/operators';
 export class ConsentPageComponent implements OnInit {
 
   consent: FormGroup;
-  step: string = 'step1';
 
   constructor(
     private fb: FormBuilder,
@@ -25,7 +25,7 @@ export class ConsentPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const localData = this.otherDataService.takeInLocalStorage(this.step) || {};
+    const localData = this.otherDataService.takeInLocalStorage(Steps.step1) || {};
 
     this.consent = this.fb.group({
       phone: [localData['phone'], [
@@ -40,20 +40,10 @@ export class ConsentPageComponent implements OnInit {
     this.consent.valueChanges.pipe(
       debounceTime(1000),
       tap(() => {
-        this.otherDataService.saveInLocalStorage(this.step, this.consent.value)
+        this.otherDataService.saveInLocalStorage(Steps.step1, this.consent.value);
       }))
       .subscribe();
   }
-
-  private funcNextStep(clearNumber) {
-    this.apiService.setPhone(clearNumber);
-    this.router.navigate(['/code'], {
-      queryParams: {
-        access: true
-      }
-    });
-  }
-
 
   onSubmit() {
     let nextStep: boolean;
@@ -63,15 +53,19 @@ export class ConsentPageComponent implements OnInit {
       this.apiService.checkPhone(clearNumber).subscribe(dataInfo => {
         nextStep = !!dataInfo.token;
         if (nextStep && !dataInfo.hasActiveCards) {
-          this.funcNextStep(clearNumber);
-        } else if (!nextStep && dataInfo.hasActiveCards) {
+          this.router.navigate(['/code'], {
+            queryParams: {
+              access: true
+            }
+          });
+        } /* else if (!nextStep && dataInfo.hasActiveCards) {
           this.otherDataService.openDialogWarning();
           this.otherDataService.accessForMerge.subscribe(valueFlag => {
             if (valueFlag) {
               this.funcNextStep(clearNumber);
             }
           });
-        }
+        } */
       });
     }
   }

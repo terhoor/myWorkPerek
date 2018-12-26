@@ -3,6 +3,9 @@ import { Md5 } from 'ts-md5';
 import { Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
+import { OtherDataService } from './other-data.service';
+import { Steps } from '../steps';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +47,16 @@ export class ApiService {
     return this._userExists;
   }
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private otherDataService: OtherDataService
+    ) {
+      let phoneNum = this.otherDataService.takeInLocalStorage(Steps.step1);
+      console.log(phoneNum);
+      if (phoneNum !== null) {
+        phoneNum = this.otherDataService.changeNumberClear(phoneNum.phone);
+        this.setPhone(phoneNum);
+      }
   }
 
   public signInDevice(): Observable<any> {
