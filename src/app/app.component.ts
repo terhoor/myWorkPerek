@@ -11,7 +11,6 @@ export class AppComponent {
   constructor(private apiService: ApiService) {
     this.apiService.generateInstanceId('152');
     this.apiService.signInDevice().subscribe(data => {
-      console.log(data);
     });
   }
 }

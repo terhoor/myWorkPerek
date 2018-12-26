@@ -15,7 +15,7 @@
           matInput
           placeholder="Telephone"
           [formControlName]="'phone'"
-          class="num-before"
+          class="num-before val-info"
           appPhoneMask
         >
       </mat-form-field>
@@ -31,20 +31,20 @@
 
     <div class="box-checkboxes">
       <div class="box-checkbox">
-        <mat-checkbox class="padd" [formControlName]="'checkbox1'"></mat-checkbox>
+        <mat-checkbox class="padd val-info" [formControlName]="'checkbox1'"></mat-checkbox>
         <label>
           Я согласен(на) с <span class="link-green" (click)="showPopupRule()">Правилами клуба</span>
         </label>
       </div>
       <div class="box-checkbox">
-        <mat-checkbox class="padd" [formControlName]="'checkbox2'"></mat-checkbox>
+        <mat-checkbox class="padd val-info" [formControlName]="'checkbox2'"></mat-checkbox>
         <label>Я согласен(на) с
           <span class="link-green" (click)="showAgreement()">Соглашением на обработку и передачу персональных данных</span>
         </label>
       </div>
     </div>
     <div class="buttons">
-      <app-btn-next [isValid]="isValidForm">Продолжить</app-btn-next>
+      <app-btn-next [isValid]="consent.valid">Продолжить</app-btn-next>
     </div>
   </form>
 

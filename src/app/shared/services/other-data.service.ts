@@ -10,21 +10,29 @@ import { PopupWarningComponent } from '../components/popup/popup-warning/popup-w
 export class OtherDataService {
   // phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
   accessForMerge: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  numberCard: BehaviorSubject<string> = new BehaviorSubject('0000000000000000') ;
+  numberCard: BehaviorSubject<string> = new BehaviorSubject('0000000000000000');
 
   constructor(
     public dialog: MatDialog
-    ) {
-
+  ) {
   }
 
-
-  changeNumberDecore(numberStr) {
+  changeNumberDecoration(numberStr): string {
     if (numberStr.length === 12) {
       return numberStr.replace(/^(\+\d)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '$1 ($2) $3-$4-$5');
     } else if (numberStr.length === 10) {
       return numberStr.replace(/^(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/, '($1) $2-$3-$4');
     }
+  }
+
+  changeNumberClear(numberStr): string {
+    let result: string = '';
+    if (numberStr[0] === '+') {
+      result = numberStr.replace(/\D/g, '')
+    } else {
+      result = '+7' + numberStr.replace(/\D/g, '');
+    }
+    return result;
   }
 
   generateNumberCard() {
@@ -58,9 +66,18 @@ export class OtherDataService {
 
     dialogRefWarning.afterClosed().subscribe(answer => {
       answer = !!answer;
-        this.accessForMerge.next(answer);
-        console.log(this.accessForMerge.getValue());
+      this.accessForMerge.next(answer);
+      console.log(this.accessForMerge.getValue());
     });
   }
 
+  saveInLocalStorage(step, dataObj): void {
+    console.log(step, dataObj);
+    const strData = JSON.stringify(dataObj);
+    localStorage.setItem(step, strData);
+  }
+
+  takeInLocalStorage(step): any {
+    return JSON.parse(localStorage.getItem(step));
+  }
 }

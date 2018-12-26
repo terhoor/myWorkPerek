@@ -8,7 +8,6 @@ import { InfoPageComponent } from './info-page/info-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BtnNextComponent } from './shared/components/buttons/btn-next/btn-next.component';
 import { BtnBackComponent } from './shared/components/buttons/btn-back/btn-back.component';
-import { MaterialModule } from './material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ConsentPageComponent } from './consent-page/consent-page.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -24,7 +23,17 @@ import { PopupWarningComponent } from './shared/components/popup/popup-warning/p
 import { MapDisplayCardPipe } from './shared/components/pipes/map-display-card.pipe';
 import { ApiService } from './shared/services/api.service';
 
+import {MatButtonModule, MatCheckboxModule, MatDatepickerModule} from '@angular/material';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
 
+const materialArray = [
+  MatButtonModule,
+  MatInputModule,
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatDialogModule
+];
 
 @NgModule({
   declarations: [
@@ -47,12 +56,12 @@ import { ApiService } from './shared/services/api.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
     MatNativeDateModule,
+    materialArray
   ],
   exports: [
     PhoneMaskDirective,

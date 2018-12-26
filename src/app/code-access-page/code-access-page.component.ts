@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
@@ -16,9 +16,8 @@ export class CodeAccessPageComponent implements OnInit {
   phoneNumber: string;
   nextAccess: boolean;
   timerEnd: boolean = false;
-  formCode = this.fb.group({
-    code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
-  });
+  formCode: FormGroup;
+  step: string = 'step2';
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
@@ -28,7 +27,13 @@ export class CodeAccessPageComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.phoneNumber = this.otherDataService.changeNumberDecore(this.apiService.phone);
+    const localData = this.otherDataService.takeInLocalStorage(this.step) || {};
+
+    this.formCode = this.fb.group({
+      code: [localData.code || '', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
+    });
+
+    this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
     this.formCode.controls['code'].valueChanges.subscribe(() => {
       this.nextAccess = true;
