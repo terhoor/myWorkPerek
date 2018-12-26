@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
+import { debounceTime, tap } from 'rxjs/operators';
+import { OtherDataService } from '../shared/services/other-data.service';
+import { Steps } from '../shared/steps';
 
 @Component({
   selector: 'app-registration-page',
@@ -10,28 +13,33 @@ import { ApiService } from '../shared/services/api.service';
 })
 export class RegistrationPageComponent implements OnInit {
 
-  nextAccess: boolean;
   formReg: FormGroup;
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private otherDataService: OtherDataService
   ) {
 
   }
 
   ngOnInit() {
+    const localData = this.otherDataService.takeInLocalStorage(Steps.step3) || {};
+
     this.formReg = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      birthday: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]]
+      firstName: [localData['firstName'], [Validators.required]],
+      lastName: [localData['lastName'], [Validators.required]],
+      birthday: [localData['birthday'], [Validators.required]],
+      email: [localData['email'], [Validators.required, Validators.email]]
 
     });
 
-    this.formReg.statusChanges.subscribe(() => {
-      this.nextAccess = this.formReg.valid;
-    });
+    this.formReg.valueChanges.pipe(
+      debounceTime(1000),
+      tap(() => {
+        this.otherDataService.saveInLocalStorage(Steps.step3, this.formReg.value);
+      }))
+      .subscribe();
 
   }
 

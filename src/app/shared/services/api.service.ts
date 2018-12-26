@@ -202,7 +202,7 @@ export class ApiService {
     );
   }
 
-  public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }) {
+  public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }): {} {
 
     const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
     const data = Object.assign({ token: this.registerToken }, userData);
@@ -269,13 +269,13 @@ export class ApiService {
     return this.baseUri + path;
   }
 
-  private getHeaders(headers: HttpHeaders) {
+  private getHeaders(headers: HttpHeaders): {} {
     return headers
       .append('Content-Type', 'application/json')
       .append('Authorization', 'Basic ' + btoa('edadil:kLUWMyyNKNs7VtyH'));
   }
 
-  public setPhone(phone: string) {
+  public setPhone(phone: string): void {
     this._phone = phone;
   }
 
