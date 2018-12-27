@@ -1,10 +1,10 @@
-import { Component, OnInit, OnChanges, DoCheck } from '@angular/core';
+import { Component, OnInit, OnChanges, DoCheck, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { ApiService } from '../shared/services/api.service';
-import { fromEvent } from 'rxjs';
-import { switchMap, debounceTime, tap} from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, debounceTime, tap} from 'rxjs/operators';
 import { Steps } from '../shared/steps';
 
 @Component({
@@ -12,12 +12,12 @@ import { Steps } from '../shared/steps';
   templateUrl: './consent-page.component.html',
   styleUrls: ['./consent-page.component.css']
 })
-export class ConsentPageComponent implements OnInit {
+export class ConsentPageComponent implements OnInit, OnDestroy {
 
   consent: FormGroup;
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
   public phoneMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
-  
-  
 
   constructor(
     private fb: FormBuilder,
@@ -40,10 +40,16 @@ export class ConsentPageComponent implements OnInit {
 
     this.consent.valueChanges.pipe(
       debounceTime(1000),
+      takeUntil(this.destroy$),
       tap(() => {
         this.otherDataService.saveInLocalStorage(Steps.step1, this.consent.value);
       }))
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   onSubmit() {
@@ -55,7 +61,11 @@ export class ConsentPageComponent implements OnInit {
     }
     let nextStep: boolean;
     if (this.consent.valid) {
-      this.apiService.checkPhone(clearNumber).subscribe(dataInfo => {
+      this.apiService.checkPhone(clearNumber)
+      .pipe(
+        takeUntil(this.destroy$),
+      )
+      .subscribe(dataInfo => {
         nextStep = !!dataInfo.token;
         if (nextStep && !dataInfo.hasActiveCards) {
           this.router.navigate(['/code'], {
@@ -63,14 +73,7 @@ export class ConsentPageComponent implements OnInit {
               access: true
             }
           });
-        } /* else if (!nextStep && dataInfo.hasActiveCards) {
-          this.otherDataService.openDialogWarning();
-          this.otherDataService.accessForMerge.subscribe(valueFlag => {
-            if (valueFlag) {
-              this.funcNextStep(clearNumber);
-            }
-          });
-        } */
+        }
       });
     }
   }
