@@ -4,8 +4,8 @@ import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
-import { switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
-import { merge, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-code-access-page',
@@ -20,7 +20,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   nextAccess: boolean;
   timerEnd: boolean = false;
   formCode: FormGroup;
-  codeTimer$: Subscription;
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -37,32 +37,42 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     });
 
     this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
-
-
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
-    this.codeTimer$ = merge(this.timer$, this.formCode.controls['code'].valueChanges)
+    this.timer$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(() => {
+      this.saveLocalStorage();
+    });
+
+    this.formCode.controls['code'].valueChanges
+    .pipe(takeUntil(this.destroy$))
     .subscribe(() => {
       this.nextAccess = true;
-      const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
-      this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
+      this.saveLocalStorage();
     });
 
     this.timerTick();
   }
 
   ngOnDestroy() {
-    this.codeTimer$.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  saveLocalStorage() {
+    const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
+    this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
   }
 
   timerTick(): void {
     const myTimer = setInterval(() => {
       const valueTimer = this.timer$.getValue() - 1;
       this.timer$.next(valueTimer);
+    
       if (valueTimer === 0) {
         clearTimeout(myTimer);
         this.timerEnd = true;
-
       }
     }, 1000);
   }
@@ -78,13 +88,13 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   doAttempt(): void {
+    this.nextAccess = false;
     if (this.attempt > 0) {
       this.attempt--;
     }
 
     if (this.attempt === 0) {
       this.formCode.disable();
-      this.nextAccess = false;
     }
   }
 
