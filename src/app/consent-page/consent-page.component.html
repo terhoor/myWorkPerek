@@ -21,8 +21,7 @@
       </mat-form-field>
       <div class="warnging-phone" *ngIf="consent.get('phone').touched && consent.get('phone').invalid">
         <div *ngIf="consent.get('phone').errors['required']">Пароль не должен быть пустым</div>
-        <div  *ngIf="consent.get('phone').errors['minlength'] && consent.get('phone').errors['minlength']['requiredLength'] ||
-        consent.get('phone').errors['maxlength'] && consent.get('phone').errors['maxlength']['requiredLength']">
+        <div  *ngIf="consent.get('phone').invalid && consent.get('phone').touched">
           Неверно введен номер мобильного телефона
         </div>
 

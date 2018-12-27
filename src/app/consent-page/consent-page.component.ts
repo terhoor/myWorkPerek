@@ -16,7 +16,6 @@ export class ConsentPageComponent implements OnInit {
 
   consent: FormGroup;
   public phoneMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
-  // [/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/];
   
   
 
@@ -33,9 +32,7 @@ export class ConsentPageComponent implements OnInit {
 
     this.consent = this.fb.group({
       phone: [localData['phone'], [
-        Validators.required,
-        Validators.minLength(15),
-        Validators.maxLength(15)
+        Validators.required
       ]],
       checkbox1: [localData['checkbox1'] || false, [Validators.pattern('true')]],
       checkbox2: [localData['checkbox2'] || false, [Validators.pattern('true')]]
@@ -50,10 +47,14 @@ export class ConsentPageComponent implements OnInit {
   }
 
   onSubmit() {
+    const phone = this.consent.controls['phone'].value;
+    const clearNumber = this.otherDataService.changeNumberClear(phone);
+    if (clearNumber.length !== 12) {
+      this.consent.controls['phone'].setErrors({'incorrect': true});
+      return;
+    }
     let nextStep: boolean;
     if (this.consent.valid) {
-      const phone = this.consent.controls['phone'].value;
-      const clearNumber = this.otherDataService.changeNumberClear(phone);
       this.apiService.checkPhone(clearNumber).subscribe(dataInfo => {
         nextStep = !!dataInfo.token;
         if (nextStep && !dataInfo.hasActiveCards) {
