@@ -21,6 +21,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   timerEnd: boolean = false;
   formCode: FormGroup;
   codeTimer$: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
@@ -95,7 +96,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   checkCode(): void {
-    console.log(234);
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
 

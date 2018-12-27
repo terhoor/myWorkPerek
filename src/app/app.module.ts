@@ -22,6 +22,8 @@ import { PopupInfoComponent } from './shared/components/popup/popup-info/popup-i
 import { PopupWarningComponent } from './shared/components/popup/popup-warning/popup-warning.component';
 import { MapDisplayCardPipe } from './shared/components/pipes/map-display-card.pipe';
 import { ApiService } from './shared/services/api.service';
+import { TextMaskModule } from 'angular2-text-mask';
+
 
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
@@ -61,7 +63,8 @@ const materialArray = [
     FormsModule,
     HttpClientModule,
     MatNativeDateModule,
-    materialArray
+    materialArray,
+    TextMaskModule
   ],
   exports: [
     PhoneMaskDirective,

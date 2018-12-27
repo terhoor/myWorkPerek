@@ -16,7 +16,7 @@
           placeholder="Telephone"
           [formControlName]="'phone'"
           class="num-before val-info"
-          appPhoneMask
+          [textMask]="{mask: phoneMask}"
         >
       </mat-form-field>
       <div class="warnging-phone" *ngIf="consent.get('phone').touched && consent.get('phone').invalid">

@@ -15,6 +15,10 @@ import { Steps } from '../shared/steps';
 export class ConsentPageComponent implements OnInit {
 
   consent: FormGroup;
+  public phoneMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  // [/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/];
+  
+  
 
   constructor(
     private fb: FormBuilder,

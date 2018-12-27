@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 import { OtherDataService } from './other-data.service';
 import { Steps } from '../steps';
-import { Router } from '@angular/router';
+import { AccessNext } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root'
@@ -171,7 +171,7 @@ export class ApiService {
           'token': this.codeToken,
           'code': code
         }
-      }, httpOptions).pipe(tap((result: any) => {
+      }, httpOptions).pipe(tap((result: AccessNext) => {
         this.userAccessToken = result.accessToken;
         this.userRefreshToken = result.refreshToken;
       }));
@@ -196,7 +196,7 @@ export class ApiService {
     );
   }
 
-  public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }): {} {
+  public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }): Observable<AccessNext> {
 
     const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
     const data = Object.assign({ token: this.registerToken }, userData);

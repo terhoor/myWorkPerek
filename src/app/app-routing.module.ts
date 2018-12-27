@@ -7,7 +7,6 @@ import { CodeAccessPageComponent } from './code-access-page/code-access-page.com
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
 import { AccessGuard } from './shared/classes/access.guard';
-import { RefreshGuard } from './shared/classes/refresh.guard';
 
 const appRoutes: Routes = [
   {
