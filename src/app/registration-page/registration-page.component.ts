@@ -43,7 +43,7 @@ export class RegistrationPageComponent implements OnInit {
 
   }
 
-  regUser() {
+  regUser(): void {
 
     const valueUser = this.formReg.value;
     const dateUser = valueUser.birthday;

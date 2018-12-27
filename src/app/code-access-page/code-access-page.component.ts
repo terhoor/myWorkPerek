@@ -38,7 +38,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     });
 
     if (localData.code) {
-      this.nextAccess = true;
+    this.switchBtnNext(true);
     }
 
     this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
@@ -53,7 +53,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.formCode.controls['code'].valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.nextAccess = true;
+        this.switchBtnNext(true);
         this.saveLocalStorage();
       });
 
@@ -65,7 +65,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  saveLocalStorage() {
+  saveLocalStorage(): void {
     const infoStep = Object.assign(
       this.formCode.value,
       {'timer': this.timer$.getValue()}
@@ -95,8 +95,12 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.timerEnd = false;
   }
 
+  switchBtnNext(flag: boolean): void {
+    this.nextAccess = flag;
+  }
+
   doAttempt(): void {
-    this.nextAccess = false;
+    this.switchBtnNext(false);
     if (this.attempt > 0) {
       this.attempt--;
     }
@@ -106,11 +110,24 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkChar(event) {
+  checkChar(event: any): void {
     const numberKey = Number(String.fromCharCode(event.keyCode));
     if (isNaN(numberKey)) {
       event.preventDefault();
     }
+  }
+
+  requestNewCode(): void {
+    this.startTimer();
+    this.repeatSentCode();
+    this.switchBtnNext(true);
+  }
+  repeatSentCode(): void {
+    this.apiService.checkPhone(this.apiService.phone)
+      .pipe(
+        takeUntil(this.destroy$),
+      )
+      .subscribe();
   }
 
   checkCode(): void {

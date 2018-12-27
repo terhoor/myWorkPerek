@@ -21,7 +21,7 @@
         <div class="text" *ngIf="timer$ | async as timer">
           Отправить SMS с кодом повторно можно будет через {{timer}} секунд
         </div>
-        <a class="repeat-sms" *ngIf="timerEnd" (click)="startTimer()">
+        <a class="repeat-sms" *ngIf="timerEnd" (click)="requestNewCode()">
           Отправить смс с кодом повторно
         </a>
       </div>

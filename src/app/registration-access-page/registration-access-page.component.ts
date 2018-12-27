@@ -17,7 +17,7 @@ export class RegistrationAccessPageComponent implements OnInit {
   }
 
 
-  openDialog(strInfo) {
+  openDialog(strInfo: string): void {
     this.otherDataService.openDialog(strInfo);
   }
 }

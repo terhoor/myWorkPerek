@@ -15,7 +15,7 @@ export class InfoPageComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(strInfo) {
+  openDialog(strInfo: string): void {
     this.otherDataService.openDialog(strInfo);
   }
 

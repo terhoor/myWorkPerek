@@ -52,7 +52,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const phone = this.consent.controls['phone'].value;
     const clearNumber = this.otherDataService.changeNumberClear(phone);
     if (clearNumber.length !== 12) {
@@ -83,13 +83,13 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     this.otherDataService.openDialogWarning();
   }
 
-  showPopupRule() {
+  showPopupRule(): void {
     this.apiService.getRules().subscribe(rule => {
       this.otherDataService.openDialog(rule);
     });
   }
 
-  showAgreement() {
+  showAgreement(): void {
     this.apiService.getAgreement().subscribe(agreement => {
       this.otherDataService.openDialog(agreement);
     });
