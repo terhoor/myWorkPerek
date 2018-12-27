@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, tap, catchError } from 'rxjs/operators';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { Steps } from '../shared/steps';
+import { HttpErrorResponse } from '@angular/common/http';
+import { throwError, of } from 'rxjs';
 
 @Component({
   selector: 'app-registration-page',
@@ -14,6 +16,7 @@ import { Steps } from '../shared/steps';
 export class RegistrationPageComponent implements OnInit {
 
   formReg: FormGroup;
+  errorTime: string = 'signup-8-token-missing';
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -55,15 +58,25 @@ export class RegistrationPageComponent implements OnInit {
       valueUser.birthday = `${year}.${month}.${day}`;
     }
 
-    this.apiService.registerUser(valueUser).subscribe(dataTokens => {
-      if (dataTokens.accessToken && dataTokens.refreshToken) {
+    this.apiService.registerUser(valueUser)
+    .pipe(
+      catchError((error) => {
+        return of(error);
+      })
+    )
+    .subscribe((res: any) => {
+      if (this.errorTime === res.error.code) {
+        this.router.navigate(['/consent'], {
+          queryParams: {
+            warningTime: true
+          }
+        });
+      } else if (res.accessToken && res.refreshToken) {
         this.router.navigate(['/register-success'], {
           queryParams: {
             access: true
           }
         });
-      } else {
-        console.log('error');
       }
     });
   }

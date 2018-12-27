@@ -45,6 +45,10 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
         this.otherDataService.saveInLocalStorage(Steps.step1, this.consent.value);
       }))
       .subscribe();
+
+    this.route.queryParams.subscribe((item) => {
+      console.log(item);
+    });
   }
 
   ngOnDestroy() {
