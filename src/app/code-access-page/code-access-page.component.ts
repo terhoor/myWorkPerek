@@ -27,30 +27,35 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     private otherDataService: OtherDataService,
     private router: Router,
     private apiService: ApiService
-    ) { }
+  ) { }
 
   ngOnInit() {
     const localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
 
     this.formCode = this.fb.group({
-      code: [localData.code, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
+      code: [localData.code,
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
     });
+
+    if (localData.code) {
+      this.nextAccess = true;
+    }
 
     this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
     this.timer$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(() => {
-      this.saveLocalStorage();
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.saveLocalStorage();
+      });
 
     this.formCode.controls['code'].valueChanges
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(() => {
-      this.nextAccess = true;
-      this.saveLocalStorage();
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.nextAccess = true;
+        this.saveLocalStorage();
+      });
 
     this.timerTick();
   }
@@ -61,7 +66,10 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   saveLocalStorage() {
-    const infoStep = Object.assign(this.formCode.value, {'timer': this.timer$.getValue()});
+    const infoStep = Object.assign(
+      this.formCode.value,
+      {'timer': this.timer$.getValue()}
+      );
     this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
   }
 
@@ -69,7 +77,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     const myTimer = setInterval(() => {
       const valueTimer = this.timer$.getValue() - 1;
       this.timer$.next(valueTimer);
-    
+
       if (valueTimer === 0) {
         clearTimeout(myTimer);
         this.timerEnd = true;
@@ -107,7 +115,11 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
   checkCode(): void {
     const valueFormCode = this.formCode.value.code;
-    this.apiService.checkCode(valueFormCode).subscribe((res: any) => {
+    this.apiService.checkCode(valueFormCode)
+    .pipe(
+      takeUntil(this.destroy$)
+    )
+    .subscribe((res: any) => {
 
       if (res.success) {
         this.otherDataService.generateNumberCard();
@@ -118,7 +130,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         });
       } else {
         this.doAttempt();
-        this.formCode.controls['code'].setErrors({'incorrect': true});
+        this.formCode.controls['code'].setErrors({ 'incorrect': true });
       }
     });
   }
