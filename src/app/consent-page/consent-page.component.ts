@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { ApiService } from '../shared/services/api.service';
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, debounceTime, tap} from 'rxjs/operators';
+import { takeUntil, debounceTime, tap } from 'rxjs/operators';
 import { Steps } from '../shared/steps';
 
 @Component({
@@ -46,9 +46,16 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
       }))
       .subscribe();
 
-    this.route.queryParams.subscribe((item) => {
-      console.log(item);
-    });
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe((items: any) => {
+        const warningTime = items['warningTime'];
+        if (warningTime) {
+          console.log('превышен лимит ожидания');
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -60,25 +67,26 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     const phone = this.consent.controls['phone'].value;
     const clearNumber = this.otherDataService.changeNumberClear(phone);
     if (clearNumber.length !== 12) {
-      this.consent.controls['phone'].setErrors({'incorrect': true});
+      this.consent.controls['phone'].setErrors({ 'incorrect': true });
       return;
     }
     let nextStep: boolean;
     if (this.consent.valid) {
       this.apiService.checkPhone(clearNumber)
-      .pipe(
-        takeUntil(this.destroy$),
-      )
-      .subscribe(dataInfo => {
-        nextStep = !!dataInfo.token;
-        if (nextStep && !dataInfo.hasActiveCards) {
-          this.router.navigate(['/code'], {
-            queryParams: {
-              access: true
-            }
-          });
-        }
-      });
+        .pipe(
+          takeUntil(this.destroy$),
+        )
+        .subscribe(dataInfo => {
+          nextStep = !!dataInfo.token;
+          console.log(nextStep);
+          if (nextStep) {
+            this.router.navigate(['/code']/* , {
+              queryParams: {
+                access: true
+              }
+            } */);
+          }
+        });
     }
   }
 

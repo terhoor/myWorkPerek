@@ -26,18 +26,15 @@ const appRoutes: Routes = [
     },
     {
       path: 'code',
-      component: CodeAccessPageComponent,
-      canActivate: [AccessGuard]
+      component: CodeAccessPageComponent
     },
     {
       path: 'registration',
-      component: RegistrationPageComponent,
-      canActivate: [AccessGuard]
+      component: RegistrationPageComponent
     },
     {
       path: 'register-success',
-      component: RegistrationAccessPageComponent,
-      canActivate: [AccessGuard]
+      component: RegistrationAccessPageComponent
     },
   ]},
   {path: '**', redirectTo: '/info'}

@@ -6,15 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./btn-next.component.css']
 })
 export class BtnNextComponent implements OnInit {
-  private _isValid: boolean = false;
-  @Input()
-  set isValid(isValid: boolean) {
-    this._isValid = !isValid;
-  }
+  @Input() isValid: boolean;
 
-  get isValid(): boolean {
-    return this._isValid;
-  }
   constructor() { }
 
   ngOnInit() {

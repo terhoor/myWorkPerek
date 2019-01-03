@@ -56,7 +56,6 @@ export class ApiService {
       return;
     }
     const keys = Object.keys(data);
-    console.log(keys);
     keys.forEach((key) => {
       this[key] = data[key];
     });
@@ -138,7 +137,9 @@ export class ApiService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.log(error);
-        if (error.error.code === '2fa-02') {
+        if (error.error === null) {
+          console.log('Возникли проблемы');
+        } else if (error.error.code === '2fa-02') {
           this._userExists = false;
           return this.httpClient.post(this.getUrl('/api/v5/signup/new/step1'), {
             'number': this._phone,
