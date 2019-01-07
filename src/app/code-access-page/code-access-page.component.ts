@@ -4,7 +4,7 @@ import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
@@ -18,7 +18,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   timer$: BehaviorSubject<number>;
   phoneNumber: string;
   nextAccess: boolean;
-  timerEnd: boolean = false;
   formCode: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -31,7 +30,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
-
     this.formCode = this.fb.group({
       code: [localData.code,
         [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
@@ -41,14 +39,8 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.switchBtnNext(true);
     }
 
-    this.timer$ = new BehaviorSubject(localData.timer || this.apiService.repeatTime);
+    this.timer$ = new BehaviorSubject(localData.timer !== undefined ? localData.timer : this.apiService.repeatTime);
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
-
-    this.timer$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.saveLocalStorage();
-      });
 
     this.formCode.controls['code'].valueChanges
       .pipe(takeUntil(this.destroy$))
@@ -57,7 +49,14 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         this.saveLocalStorage();
       });
 
-    this.timerTick();
+    this.timer$.pipe(
+      tap(() => {
+        this.saveLocalStorage();
+      },
+      takeUntil(this.destroy$)
+      )
+    ).subscribe();
+
   }
 
   ngOnDestroy() {
@@ -71,28 +70,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       {'timer': this.timer$.getValue()}
       );
     this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
-  }
-
-  timerTick(): void {
-    const myTimer = setInterval(() => {
-      const valueTimer = this.timer$.getValue() - 1;
-      this.timer$.next(valueTimer);
-
-      if (valueTimer === 0) {
-        clearTimeout(myTimer);
-        this.timerEnd = true;
-      }
-    }, 1000);
-  }
-
-  startTimer(): void {
-    this.timerReset();
-    this.timerTick();
-  }
-
-  timerReset(): void {
-    this.timer$.next(this.apiService.repeatTime);
-    this.timerEnd = false;
   }
 
   switchBtnNext(flag: boolean): void {
@@ -118,10 +95,10 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   requestNewCode(): void {
-    this.startTimer();
     this.repeatSentCode();
     this.switchBtnNext(true);
   }
+
   repeatSentCode(): void {
     this.apiService.checkPhone(this.apiService.phone)
       .pipe(

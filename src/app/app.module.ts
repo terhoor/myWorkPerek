@@ -28,6 +28,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
+import { TimerComponent } from './code-access-page/timer/timer.component';
 
 const materialArray = [
   MatButtonModule,
@@ -53,6 +54,7 @@ const materialArray = [
     PopupInfoComponent,
     PopupWarningComponent,
     MapDisplayCardPipe,
+    TimerComponent,
 
   ],
   imports: [

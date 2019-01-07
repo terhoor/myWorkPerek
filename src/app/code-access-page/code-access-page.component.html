@@ -18,14 +18,13 @@
         </span>
       </div>
       <div class="text-repeat" *ngIf="!formCode.disabled">
-        <div class="text" *ngIf="timer$ | async as timer">
-          Отправить SMS с кодом повторно можно будет через {{timer}} секунд
-        </div>
-        <a class="repeat-sms" *ngIf="timerEnd" (click)="requestNewCode()">
-          Отправить смс с кодом повторно
-        </a>
+        <app-timer
+        [timer$]="timer$"
+        onSaveLocalStorage="saveLocalStorage()"
+        onRequestNewCode="requestNewCode()"
+        ></app-timer>
       </div>
-      <div *ngIf="attempt === 0" class="warning">
+      <div *ngIf="!attempt" class="warning">
         Превышен лимин попыток
       </div>
 
