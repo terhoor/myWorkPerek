@@ -6,7 +6,6 @@ import { ConsentPageComponent } from './consent-page/consent-page.component';
 import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
-import { AccessGuard } from './shared/classes/access.guard';
 
 const appRoutes: Routes = [
   {

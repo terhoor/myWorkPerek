@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { OtherDataService } from '../shared/services/other-data.service';
 
 @Component({
-  selector: 'app-registration-access-page',
-  templateUrl: './registration-access-page.component.html',
-  styleUrls: ['./registration-access-page.component.css']
+  selector: 'app-registration-success-page',
+  templateUrl: './registration-success-page.component.html',
+  styleUrls: ['./registration-success-page.component.css']
 })
-export class RegistrationAccessPageComponent implements OnInit {
+export class RegistrationSuccessPageComponent implements OnInit {
 
   constructor(
     private otherDataService: OtherDataService

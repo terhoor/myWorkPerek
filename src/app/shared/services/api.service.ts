@@ -162,7 +162,9 @@ export class ApiService {
 
   public checkCode(code: string): Observable<any> {
     let codeObserver: Observable<any>;
-    const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
+    const httpOptions = {
+      headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken }))
+    };
     if (this._userExists) {
       console.log('if');
       codeObserver = this.httpClient.post(this.getUrl('/api/v5/auth/signin'), {
@@ -199,7 +201,8 @@ export class ApiService {
 
   public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }): Observable<AccessNext> {
 
-    const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
+    const httpOptions = { 
+      headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
     const data = Object.assign({ token: this.registerToken }, userData);
     return this.httpClient.post(this.getUrl('/api/v5/signup/new/step3'), data, httpOptions).pipe(tap((result: any) => {
       this.userAccessToken = result.accessToken;
@@ -208,27 +211,6 @@ export class ApiService {
 
     }));
   }
-
-  // public getUser(): Observable<any> {
-  //   const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.userAccessToken })) };
-  //   return this.httpClient.get(this.getUrl('/api/v5/users/me'), httpOptions).pipe(tap((result: any) => this.user = result));
-  // }
-
-  // public sendCard() {
-  //   const httpOptions = {
-  //     headers: this.getHeaders(new HttpHeaders(
-  //       {
-  //         'Content-Type': 'application/json', 'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.eyJzdWIiOlsicGVyZWtyZXN0b2siLCJhcGkiLCJtZXJjaGFudHMiXSwiZXhwIjoxNTcxODQwODU3LCJuYmYiOjE1NDAzMDQ4Mzd9.pkX32Bch09lAjDNwL9171j8I7uWB6SzhwBxMlOOLY1GvJenvyFAxQkyyyTjXt68qCAEjz_kNe_XdC1fvLHYqpiRjbClkDW-2A0YIath78e32BlocOeFfpNlSiN4nmH4JQ3rsh6xlr2R1dgrGS_LCOZUJNxckH4fwclpDHmYFmp-WiEm50_6drR4PjQJ3BqE_PWXd1t4WTUEGkHB5-3sa6xxQC3LShBq9ALO2NXJ7mvsQ2R0ELbYjjyLLLkvATaUWo4_UbOK6JHjznrMRzyVT0JDKEqHrA-sIKXZZDsuLnsEGY2Khjn78aqaq3va7qr-TJfJT7oV4PXn8R0VC2THNZQ`
-  //       }
-  //     ))
-  //   };
-  //   return this.httpClient.post('https://lc.edadev.ru/api/v1/cards/perekrestok/callback', {
-  //     'cardno': this.user.loyaltyNo,
-  //     'uid': this.edadilId,
-  //     'duid': this.deviceId,
-  //     'created_at': (new Date()).toISOString()
-  //   }, httpOptions);
-  // }
 
   public getRules(): Observable<{ title: string, text: string }> {
     const httpOptions = { headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
@@ -274,7 +256,4 @@ export class ApiService {
     this._phone = phone;
   }
 
-  // get cardNumber(): any {
-  //   return this.user.loyaltyNo === undefined ? false : this.user.loyaltyNo;
-  // }
 }
