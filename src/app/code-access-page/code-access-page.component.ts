@@ -4,7 +4,7 @@ import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
@@ -43,10 +43,13 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
     this.formCode.controls['code'].valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(200),
+        takeUntil(this.destroy$)
+        )
       .subscribe(() => {
-        this.switchBtnNext(true);
         this.saveLocalStorage();
+        this.switchBtnNext(true);
       });
 
     this.timer$.pipe(
@@ -87,13 +90,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkChar(event: any): void {
-    const numberKey = Number(String.fromCharCode(event.keyCode));
-    if (isNaN(numberKey)) {
-      event.preventDefault();
-    }
-  }
-
   requestNewCode(): void {
     this.switchBtnNext(false);
     this.repeatSentCode();
@@ -107,6 +103,10 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  checkChar(event: KeyboardEvent): void {
+    this.otherDataService.checkChar(event);
+  }
+
   checkCode(): void {
     const valueFormCode = this.formCode.value.code;
     this.apiService.checkCode(valueFormCode)
@@ -117,11 +117,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
       if (res.success) {
         this.otherDataService.generateNumberCard();
-        this.router.navigate(['/registration'], {
-          queryParams: {
-            access: true
-          }
-        });
+        this.router.navigate(['/registration']);
       } else {
         this.doAttempt();
         this.formCode.controls['code'].setErrors({ 'incorrect': true });

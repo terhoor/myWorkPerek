@@ -43,16 +43,32 @@ export class OtherDataService {
     this.numberCard.next(arrCard.join(''));
   }
 
+  saveInLocalStorage(step, dataObj): void {
+    const strData = JSON.stringify(dataObj);
+    localStorage.setItem(step, strData);
+  }
+
+  takeInLocalStorage(step): any {
+    return JSON.parse(localStorage.getItem(step));
+  }
+
+  checkChar(event: KeyboardEvent): void {
+    const numberKey = Number(String.fromCharCode(event.keyCode));
+    if (isNaN(numberKey)) {
+      event.preventDefault();
+    }
+  }
+
   openDialog(strInfo): void {
     this.dialog.open(PopupInfoComponent, {
       width: '100vw',
       height: '100vh',
       maxHeight: '100vh',
       maxWidth: '100vw',
-
+  
       data: strInfo
     });
-
+  
   }
 
   openDialogWarning(): void {
@@ -63,20 +79,11 @@ export class OtherDataService {
         top: 'auto'
       }
     });
-
+  
     dialogRefWarning.afterClosed().subscribe(answer => {
       answer = !!answer;
       this.accessForMerge.next(answer);
       console.log(this.accessForMerge.getValue());
     });
-  }
-
-  saveInLocalStorage(step, dataObj): void {
-    const strData = JSON.stringify(dataObj);
-    localStorage.setItem(step, strData);
-  }
-
-  takeInLocalStorage(step): any {
-    return JSON.parse(localStorage.getItem(step));
   }
 }

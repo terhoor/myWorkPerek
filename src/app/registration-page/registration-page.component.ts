@@ -65,18 +65,17 @@ export class RegistrationPageComponent implements OnInit {
       })
     )
     .subscribe((res: any) => {
-      if (this.errorTime === res.error.code) {
+      console.log(res);
+      if (res.accessToken && res.refreshToken) {
+        this.router.navigate(['/register-success']);
+      } else if (this.errorTime === res.error.code) {
         this.router.navigate(['/consent'], {
           queryParams: {
             warningTime: true
           }
         });
-      } else if (res.accessToken && res.refreshToken) {
-        this.router.navigate(['/register-success'], {
-          queryParams: {
-            access: true
-          }
-        });
+      } else {
+        console.log('Ошибка!!!');
       }
     });
   }

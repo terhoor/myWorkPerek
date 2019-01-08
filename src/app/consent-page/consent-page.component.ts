@@ -30,6 +30,10 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const localData = this.otherDataService.takeInLocalStorage(Steps.step1) || {};
 
+    this.apiService.generateInstanceId((Math.random() * 20).toString());
+    this.apiService.signInDevice().subscribe(data => {
+    });
+
     this.consent = this.fb.group({
       phone: [localData['phone'], [
         Validators.required
@@ -80,11 +84,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
           nextStep = !!dataInfo.token;
           console.log(nextStep);
           if (nextStep) {
-            this.router.navigate(['/code']/* , {
-              queryParams: {
-                access: true
-              }
-            } */);
+            this.router.navigate(['/code']);
           }
         });
     }

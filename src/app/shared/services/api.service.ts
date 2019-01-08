@@ -86,11 +86,6 @@ export class ApiService {
     private otherDataService: OtherDataService
     ) {
       this.getDataInLocSt();
-      if (this.instanceId !== '') {
-        this.generateInstanceId('152');
-        this.signInDevice().subscribe(data => {
-      });
-    }
   }
 
   public signInDevice(): Observable<any> {
