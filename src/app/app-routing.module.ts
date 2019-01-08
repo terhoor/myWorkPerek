@@ -5,7 +5,7 @@ import { InfoPageComponent } from './info-page/info-page.component';
 import { ConsentPageComponent } from './consent-page/consent-page.component';
 import { CodeAccessPageComponent } from './code-access-page/code-access-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { RegistrationAccessPageComponent } from './registration-access-page/registration-access-page.component';
+import { RegistrationSuccessPageComponent } from './registration-success-page/registration-success-page.component';
 
 const appRoutes: Routes = [
   {
@@ -33,7 +33,7 @@ const appRoutes: Routes = [
     },
     {
       path: 'register-success',
-      component: RegistrationAccessPageComponent
+      component: RegistrationSuccessPageComponent
     },
   ]},
   {path: '**', redirectTo: '/info'}

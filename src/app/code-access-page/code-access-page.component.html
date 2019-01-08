@@ -20,8 +20,7 @@
       <div class="text-repeat" *ngIf="!formCode.disabled">
         <app-timer
         [timer$]="timer$"
-        onSaveLocalStorage="saveLocalStorage()"
-        onRequestNewCode="requestNewCode()"
+        (onRequestNewCode)="requestNewCode()"
         ></app-timer>
       </div>
       <div *ngIf="!attempt" class="warning">

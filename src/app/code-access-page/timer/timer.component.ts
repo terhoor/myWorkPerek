@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timer',
@@ -13,8 +12,7 @@ export class TimerComponent implements OnInit {
   timerEnd: boolean = false;
   @Input() repeatTime: number;
   @Input() timer$: BehaviorSubject<number>;
-  @Output() onSaveLocalStorage = new EventEmitter<void>();
-  @Output() onRequestNewCode = new EventEmitter<void>();
+  @Output() onRequestNewCode: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private apiService: ApiService
@@ -22,15 +20,7 @@ export class TimerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.timer$
-      .pipe(
-        tap(() => {
-          this.onSaveLocalStorage.emit();
-        })
-      );
-
     this.timerTick();
-
   }
 
   requestNewCode() {

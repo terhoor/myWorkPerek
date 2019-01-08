@@ -17,7 +17,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   attempt: number = this.apiService.repeatCount;
   timer$: BehaviorSubject<number>;
   phoneNumber: string;
-  nextAccess: boolean;
+  nextAccess: boolean = false;
   formCode: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -95,8 +95,8 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   requestNewCode(): void {
+    this.switchBtnNext(false);
     this.repeatSentCode();
-    this.switchBtnNext(true);
   }
 
   repeatSentCode(): void {
