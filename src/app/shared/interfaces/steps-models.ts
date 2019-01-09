@@ -1,14 +1,17 @@
 export interface LSDataStep1 {
-  code: number;
-  timer: number;
+  phone?: string;
+  checkbox1?: boolean;
+  checkbox2?: boolean;
 }
 
 export interface LSDataStep2 {
-  code: number;
-  timer: number;
+  code?: number;
+  timer?: number;
 }
 
 export interface LSDataStep3 {
-  code: number;
-  timer: number;
+  firstName?: string;
+  lastName?: string;
+  birthday?: string;
+  email?: string;
 }

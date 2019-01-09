@@ -6,6 +6,7 @@ import { debounceTime, tap, catchError } from 'rxjs/operators';
 import { Steps } from '../shared/steps';
 import { of } from 'rxjs';
 import { LocaleStorageService } from '../shared/services/locale-storage.service';
+import { LSDataStep3 } from '../shared/interfaces/steps-models';
 
 @Component({
   selector: 'app-registration-page',
@@ -26,7 +27,7 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const localData = this.localeStorageService.takeInLocalStorage(Steps.step3) || {};
+    const localData: LSDataStep3 = this.localeStorageService.takeInLocalStorage(Steps.step3) || {};
 
     this.formReg = this.fb.group({
       firstName: [localData['firstName'], [Validators.required]],

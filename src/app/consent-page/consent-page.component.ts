@@ -7,6 +7,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, debounceTime, tap } from 'rxjs/operators';
 import { Steps } from '../shared/steps';
 import { LocaleStorageService } from '../shared/services/locale-storage.service';
+import { LSDataStep1 } from '../shared/interfaces/steps-models';
 
 @Component({
   selector: 'app-consent-page',
@@ -30,8 +31,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    const localData = this.localeStorageService.takeInLocalStorage(Steps.step1) || {};
-
+    const localData: LSDataStep1 = this.localeStorageService.takeInLocalStorage(Steps.step1) || {};
     this.apiService.generateInstanceId((Math.random() * 20).toString());
     this.apiService.signInDevice().subscribe(data => {
     });
