@@ -111,7 +111,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     const stateValid = this.formCode.valid;
     this.formCode.disable();
     const valueFormCode = this.formCode.value.code;
-    if (!stateValid && this.haveAttempt()) {
+    if (!stateValid) {
       this.formCode.controls['code'].enable();
       this.doAttempt();
       return;
