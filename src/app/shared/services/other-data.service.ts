@@ -8,7 +8,6 @@ import { PopupWarningComponent } from '../components/popup/popup-warning/popup-w
 
 @Injectable()
 export class OtherDataService {
-  // phoneNumber: BehaviorSubject<string> = new BehaviorSubject('');
   accessForMerge: BehaviorSubject<boolean> = new BehaviorSubject(false);
   numberCard: BehaviorSubject<string> = new BehaviorSubject('0000000000000000');
 
@@ -41,15 +40,6 @@ export class OtherDataService {
       arrCard[i] = String(Math.floor(Math.random() * 9999) + 1000);
     }
     this.numberCard.next(arrCard.join(''));
-  }
-
-  saveInLocalStorage(step, dataObj): void {
-    const strData = JSON.stringify(dataObj);
-    localStorage.setItem(step, strData);
-  }
-
-  takeInLocalStorage(step): any {
-    return JSON.parse(localStorage.getItem(step));
   }
 
   checkChar(event: KeyboardEvent): void {

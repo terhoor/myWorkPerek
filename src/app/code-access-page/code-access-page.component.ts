@@ -7,6 +7,7 @@ import { Steps } from '../shared/steps';
 import { takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { LSDataStep2 } from '../shared/interfaces/steps-models';
+import { LocaleStorageService } from '../shared/services/locale-storage.service';
 
 @Component({
   selector: 'app-code-access-page',
@@ -27,11 +28,12 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private otherDataService: OtherDataService,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private localeStorageService: LocaleStorageService
   ) { }
 
   ngOnInit() {
-    this.localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
+    this.localData = this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
     this.formCode = this.fb.group({
       code: [this.localData.code,
         [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
@@ -64,7 +66,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   saveLocalStorage(): void {
     // this.localData['code'] = this.formCode.value;
     const newData = Object.assign(this.localData, this.formCode.value);
-    this.otherDataService.saveInLocalStorage(Steps.step2, newData);
+    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
   }
 
   switchOnBtnNext(): void {

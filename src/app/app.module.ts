@@ -29,6 +29,7 @@ import {MatButtonModule, MatCheckboxModule, MatDatepickerModule} from '@angular/
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import { TimerComponent } from './code-access-page/timer/timer.component';
+import { LocaleStorageService } from './shared/services/locale-storage.service';
 
 const materialArray = [
   MatButtonModule,
@@ -78,6 +79,7 @@ const materialArray = [
   providers: [
     OtherDataService,
     ApiService,
+    LocaleStorageService
     ],
   bootstrap: [AppComponent]
 })

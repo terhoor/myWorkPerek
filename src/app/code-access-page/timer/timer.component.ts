@@ -1,10 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { OtherDataService } from 'src/app/shared/services/other-data.service';
 import { Steps } from 'src/app/shared/steps';
 import { tap, takeUntil } from 'rxjs/operators';
 import { LSDataStep2 } from 'src/app/shared/interfaces/steps-models';
+import { LocaleStorageService } from 'src/app/shared/services/locale-storage.service';
 
 @Component({
   selector: 'app-timer',
@@ -21,11 +21,11 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private otherDataService: OtherDataService
+    private localeStorageService: LocaleStorageService   
   ) { }
 
   ngOnInit() {
-    this.localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
+    this.localData = this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
 
     this.timer$ = new BehaviorSubject(this.localData.timer !== undefined ? this.localData.timer : this.apiService.repeatTime);
 
@@ -50,7 +50,7 @@ export class TimerComponent implements OnInit, OnDestroy {
       'timer': this.timer$.getValue()
     });
 
-    this.otherDataService.saveInLocalStorage(Steps.step2, newData);
+    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
   }
 
   requestNewCode() {

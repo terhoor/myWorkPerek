@@ -3,10 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { debounceTime, tap, catchError } from 'rxjs/operators';
-import { OtherDataService } from '../shared/services/other-data.service';
 import { Steps } from '../shared/steps';
-import { HttpErrorResponse } from '@angular/common/http';
-import { throwError, of } from 'rxjs';
+import { of } from 'rxjs';
+import { LocaleStorageService } from '../shared/services/locale-storage.service';
 
 @Component({
   selector: 'app-registration-page',
@@ -21,13 +20,13 @@ export class RegistrationPageComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private apiService: ApiService,
-    private otherDataService: OtherDataService
+    private localeStorageService: LocaleStorageService,
   ) {
 
   }
 
   ngOnInit() {
-    const localData = this.otherDataService.takeInLocalStorage(Steps.step3) || {};
+    const localData = this.localeStorageService.takeInLocalStorage(Steps.step3) || {};
 
     this.formReg = this.fb.group({
       firstName: [localData['firstName'], [Validators.required]],
@@ -40,7 +39,7 @@ export class RegistrationPageComponent implements OnInit {
     this.formReg.valueChanges.pipe(
       debounceTime(1000),
       tap(() => {
-        this.otherDataService.saveInLocalStorage(Steps.step3, this.formReg.value);
+        this.localeStorageService.saveInLocalStorage(Steps.step3, this.formReg.value);
       }))
       .subscribe();
 

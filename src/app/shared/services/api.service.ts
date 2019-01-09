@@ -3,9 +3,9 @@ import { Md5 } from 'ts-md5';
 import { Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
-import { OtherDataService } from './other-data.service';
 import { Steps } from '../steps';
 import { AccessNext } from '../interfaces/models';
+import { LocaleStorageService } from './locale-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -48,11 +48,11 @@ export class ApiService {
   }
 
   saveDataInLocSt() {
-    this.otherDataService.saveInLocalStorage(Steps.dataSave, this.collectDataForApi());
+    this.localeStorageService.saveInLocalStorage(Steps.dataSave, this.collectDataForApi());
   }
 
   getDataInLocSt() {
-    const data = this.otherDataService.takeInLocalStorage(Steps.dataSave) || null;
+    const data = this.localeStorageService.takeInLocalStorage(Steps.dataSave) || null;
     if (data === null) {
       return;
     }
@@ -84,7 +84,7 @@ export class ApiService {
 
   constructor(
     private httpClient: HttpClient,
-    private otherDataService: OtherDataService
+    private localeStorageService: LocaleStorageService
   ) {
     this.getDataInLocSt();
   }
