@@ -47,14 +47,14 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   regUser(): void {
-
+    const form = this.formReg;
     const valueUser = this.formReg.value;
     const dateUser = valueUser.birthday;
+    form.disable();
     if (typeof dateUser === 'object') {
       const year = this.addZero(dateUser.getFullYear());
       const month = this.addZero(dateUser.getMonth());
       const day = this.addZero(dateUser.getDate());
-
       valueUser.birthday = `${year}.${month}.${day}`;
     }
 
@@ -75,6 +75,7 @@ export class RegistrationPageComponent implements OnInit {
           }
         });
       } else {
+        form.enable();
         console.log('Ошибка!!!');
       }
     });
