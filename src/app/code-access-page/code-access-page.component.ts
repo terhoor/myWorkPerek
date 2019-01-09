@@ -80,6 +80,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       this.attempt--;
     }
 
+    console.log(this.attempt);
     if (this.attempt <= 0) {
       this.formCode.disable();
     }
@@ -107,14 +108,12 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   checkCode(): void {
-    this.doAttempt();
     const stateValid = this.formCode.valid;
     this.formCode.disable();
     const valueFormCode = this.formCode.value.code;
-    if (!stateValid) {
+    if (!stateValid && this.haveAttempt()) {
       this.formCode.controls['code'].enable();
-      this.switchOffBtnNext();
-      this.noneAttempt();
+      this.doAttempt();
       return;
     }
     this.apiService.checkCode(valueFormCode)
@@ -136,15 +135,9 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
       this.formCode.controls['code'].setErrors({ 'incorreсt': true });
       this.formCode.controls['code'].enable();
-      this.switchOffBtnNext();
-      this.noneAttempt();
-
+      this.doAttempt();
   }
 
-  noneAttempt() {
-    if (!this.haveAttempt()) {
-      this.formCode.disable();
-    }
-  }
+
 
 }
