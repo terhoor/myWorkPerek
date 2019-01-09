@@ -21,7 +21,7 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private localeStorageService: LocaleStorageService   
+    private localeStorageService: LocaleStorageService,
   ) { }
 
   ngOnInit() {
@@ -78,8 +78,12 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   timerReset(): void {
-    this.timer$.next(this.apiService.repeatTime);
+    this.timer$.next(this.getNewRepeatTime());
     this.timerEnd = false;
+  }
+
+  getNewRepeatTime(): number {
+    return this.apiService.repeatTime;
   }
 
 

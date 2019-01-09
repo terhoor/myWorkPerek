@@ -4,8 +4,8 @@ import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
-import { takeUntil, tap, debounceTime } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil, tap, debounceTime, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 import { LSDataStep2 } from '../shared/interfaces/steps-models';
 import { LocaleStorageService } from '../shared/services/locale-storage.service';
 
@@ -51,7 +51,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
         )
       .subscribe(() => {
-        console.log(this.formCode.controls['code']);
         this.saveLocalStorage();
         this.switchOnBtnNext();
       });
@@ -116,17 +115,20 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     }
     this.apiService.checkCode(valueFormCode)
     .pipe(
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
+      catchError((error) => {
+        return of(error);
+      })
     )
     .subscribe((res: any) => {
-
+      console.log('answer', res);
       if (res.success) {
         this.otherDataService.generateNumberCard();
         this.router.navigate(['/registration']);
       } else {
         this.formCode.enable();
         this.doAttempt();
-        this.formCode.controls['code'].setErrors({ 'incorrect': true });
+        this.formCode.controls['code'].setErrors({ 'incorrecast': true });
       }
     });
   }
