@@ -21,7 +21,7 @@ export class ApiService {
   private _userExists = false; // флаг существования
   codeToken: string;
   repeatTime = 30; // time for repeat
-  repeatCount = 10; // count repeat
+  repeatCount = 5; // count repeat
   userAccessToken: string; // user access token
   userRefreshToken: string; // user refresh token
   registerToken: string;
@@ -143,7 +143,7 @@ export class ApiService {
             tap((response: any) => {
               this.codeToken = response.token;
               this.repeatTime = 30;
-              this.repeatCount = 10;
+              this.repeatCount = 5;
               this.saveDataInLocSt();
 
             })

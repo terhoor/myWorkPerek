@@ -47,7 +47,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
     this.formCode.controls['code'].valueChanges
       .pipe(
-        debounceTime(200),
         takeUntil(this.destroy$)
         )
       .subscribe(() => {
@@ -63,13 +62,12 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   saveLocalStorage(): void {
-    // this.localData['code'] = this.formCode.value;
     const newData = Object.assign(this.localData, this.formCode.value);
     this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
   }
 
   switchOnBtnNext(): void {
-    this.nextAccess = true;
+    this.nextAccess = this.haveAttempt();
   }
 
   switchOffBtnNext(): void {
@@ -82,9 +80,13 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       this.attempt--;
     }
 
-    if (this.attempt === 0) {
+    if (this.attempt <= 0) {
       this.formCode.disable();
     }
+  }
+
+  haveAttempt(): boolean {
+    return this.attempt > 0;
   }
 
   requestNewCode(): void {
@@ -105,12 +107,14 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   checkCode(): void {
+    this.doAttempt();
     const stateValid = this.formCode.valid;
     this.formCode.disable();
     const valueFormCode = this.formCode.value.code;
     if (!stateValid) {
+      this.formCode.controls['code'].enable();
       this.switchOffBtnNext();
-      this.formCode.enable();
+      this.noneAttempt();
       return;
     }
     this.apiService.checkCode(valueFormCode)
@@ -120,17 +124,27 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         return of(error);
       })
     )
-    .subscribe((res: any) => {
-      console.log('answer', res);
+    .subscribe((res: any) => this.funcResponseCode(res));
+  }
+
+  funcResponseCode(res: any) {
       if (res.success) {
         this.otherDataService.generateNumberCard();
         this.router.navigate(['/registration']);
-      } else {
-        this.formCode.enable();
-        this.doAttempt();
-        this.formCode.controls['code'].setErrors({ 'incorrecast': true });
+        return;
       }
-    });
+
+      this.formCode.controls['code'].setErrors({ 'incorreсt': true });
+      this.formCode.controls['code'].enable();
+      this.switchOffBtnNext();
+      this.noneAttempt();
+
+  }
+
+  noneAttempt() {
+    if (!this.haveAttempt()) {
+      this.formCode.disable();
+    }
   }
 
 }

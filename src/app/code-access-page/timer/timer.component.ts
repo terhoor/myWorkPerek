@@ -14,7 +14,6 @@ import { LocaleStorageService } from 'src/app/shared/services/locale-storage.ser
 export class TimerComponent implements OnInit, OnDestroy {
 
   timerEnd: boolean = false;
-  localData: LSDataStep2;
   destroy$: Subject<boolean> = new Subject<boolean>();
   timer$: BehaviorSubject<number>;
   @Output() onRequestNewCode: EventEmitter<void> = new EventEmitter();
@@ -25,9 +24,9 @@ export class TimerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.localData = this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
+    const localData: LSDataStep2 = this.getLocalStorage();
 
-    this.timer$ = new BehaviorSubject(this.localData.timer !== undefined ? this.localData.timer : this.apiService.repeatTime);
+    this.timer$ = new BehaviorSubject(localData.timer !== undefined ? localData.timer : this.apiService.repeatTime);
 
     this.timerTick();
 
@@ -45,12 +44,20 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  getLocalStorage(): LSDataStep2 {
+    return this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
+  }
+
+  saveInLocalStorage(newData: LSDataStep2): void {
+    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
+  }
+
   saveLocalStorage(): void {
-    const newData = Object.assign(this.localData, {
+    const localData = this.getLocalStorage();
+    const newData = Object.assign(localData, {
       'timer': this.timer$.getValue()
     });
-
-    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
+    this.saveInLocalStorage(newData);
   }
 
   requestNewCode() {
