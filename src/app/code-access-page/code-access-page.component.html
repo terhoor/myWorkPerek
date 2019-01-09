@@ -18,10 +18,7 @@
         </span>
       </div>
       <div class="text-repeat" *ngIf="!formCode.disabled">
-        <app-timer
-        [timer$]="timer$"
-        (onRequestNewCode)="requestNewCode()"
-        ></app-timer>
+        <app-timer (onRequestNewCode)="requestNewCode()"></app-timer>
       </div>
       <div *ngIf="!attempt" class="warning">
         Превышен лимин попыток

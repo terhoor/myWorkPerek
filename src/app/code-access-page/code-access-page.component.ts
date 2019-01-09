@@ -6,6 +6,7 @@ import { ApiService } from '../shared/services/api.service';
 import { Steps } from '../shared/steps';
 import { takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { LSDataStep2 } from '../shared/interfaces/steps-models';
 
 @Component({
   selector: 'app-code-access-page',
@@ -20,6 +21,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   nextAccess: boolean = false;
   formCode: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
+  localData: LSDataStep2;
 
   constructor(
     private fb: FormBuilder,
@@ -29,17 +31,16 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    const localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
+    this.localData = this.otherDataService.takeInLocalStorage(Steps.step2) || {};
     this.formCode = this.fb.group({
-      code: [localData.code,
+      code: [this.localData.code,
         [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
     });
 
-    if (localData.code) {
+    if (this.localData.code) {
     this.switchOnBtnNext();
     }
 
-    this.timer$ = new BehaviorSubject(localData.timer !== undefined ? localData.timer : this.apiService.repeatTime);
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
     this.formCode.controls['code'].valueChanges
@@ -53,14 +54,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         this.switchOnBtnNext();
       });
 
-    this.timer$.pipe(
-      tap(() => {
-        this.saveLocalStorage();
-      },
-      takeUntil(this.destroy$)
-      )
-    ).subscribe();
-
   }
 
   ngOnDestroy() {
@@ -69,11 +62,9 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   saveLocalStorage(): void {
-    const infoStep = Object.assign(
-      this.formCode.value,
-      {'timer': this.timer$.getValue()}
-      );
-    this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
+    // this.localData['code'] = this.formCode.value;
+    const newData = Object.assign(this.localData, this.formCode.value);
+    this.otherDataService.saveInLocalStorage(Steps.step2, newData);
   }
 
   switchOnBtnNext(): void {
