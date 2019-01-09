@@ -36,7 +36,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     });
 
     if (localData.code) {
-    this.switchBtnNext(true);
+    this.switchOnBtnNext();
     }
 
     this.timer$ = new BehaviorSubject(localData.timer !== undefined ? localData.timer : this.apiService.repeatTime);
@@ -48,8 +48,9 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
         )
       .subscribe(() => {
+        console.log(this.formCode.controls['code']);
         this.saveLocalStorage();
-        this.switchBtnNext(true);
+        this.switchOnBtnNext();
       });
 
     this.timer$.pipe(
@@ -75,12 +76,16 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.otherDataService.saveInLocalStorage(Steps.step2, infoStep);
   }
 
-  switchBtnNext(flag: boolean): void {
-    this.nextAccess = flag;
+  switchOnBtnNext(): void {
+    this.nextAccess = true;
+  }
+
+  switchOffBtnNext(): void {
+    this.nextAccess = false;
   }
 
   doAttempt(): void {
-    this.switchBtnNext(false);
+    this.switchOffBtnNext();
     if (this.attempt > 0) {
       this.attempt--;
     }
@@ -91,7 +96,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   requestNewCode(): void {
-    this.switchBtnNext(false);
+    this.switchOffBtnNext();
     this.repeatSentCode();
   }
 
@@ -108,7 +113,14 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   checkCode(): void {
+    const stateValid = this.formCode.valid;
+    this.formCode.disable();
     const valueFormCode = this.formCode.value.code;
+    if (!stateValid) {
+      this.switchOffBtnNext();
+      this.formCode.enable();
+      return;
+    }
     this.apiService.checkCode(valueFormCode)
     .pipe(
       takeUntil(this.destroy$)
@@ -119,6 +131,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         this.otherDataService.generateNumberCard();
         this.router.navigate(['/registration']);
       } else {
+        this.formCode.enable();
         this.doAttempt();
         this.formCode.controls['code'].setErrors({ 'incorrect': true });
       }

@@ -13,7 +13,7 @@ import { Steps } from '../shared/steps';
   styleUrls: ['./consent-page.component.css']
 })
 export class ConsentPageComponent implements OnInit, OnDestroy {
-
+  lengthNumber = 12;
   consent: FormGroup;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -68,21 +68,23 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    const stateValid = this.consent.valid;
+    this.consent.disable();
     const phone = this.consent.controls['phone'].value;
     const clearNumber = this.otherDataService.changeNumberClear(phone);
-    if (clearNumber.length !== 12) {
+    if (clearNumber.length !== this.lengthNumber) {
+      this.consent.enable();
       this.consent.controls['phone'].setErrors({ 'incorrect': true });
       return;
     }
     let nextStep: boolean;
-    if (this.consent.valid) {
+    if (stateValid) {
       this.apiService.checkPhone(clearNumber)
         .pipe(
           takeUntil(this.destroy$),
         )
         .subscribe(dataInfo => {
           nextStep = !!dataInfo.token;
-          console.log(nextStep);
           if (nextStep) {
             this.router.navigate(['/code']);
           }

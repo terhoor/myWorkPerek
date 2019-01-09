@@ -26,6 +26,7 @@ export class ApiService {
   userRefreshToken: string; // user refresh token
   registerToken: string;
   // user: any;
+  errorCanIssue = '2fa-02';
 
   collectDataForApi(): {} {
     const data = {
@@ -132,9 +133,7 @@ export class ApiService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.log(error);
-        if (error.error === null) {
-          console.log('Возникли проблемы');
-        } else if (error.error.code === '2fa-02') {
+        if (error.error.code === this.errorCanIssue) {
           this._userExists = false;
           return this.httpClient.post(this.getUrl('/api/v5/signup/new/step1'), {
             'number': this._phone,
@@ -149,6 +148,8 @@ export class ApiService {
 
             })
           );
+        } else {
+          console.log('Возникли проблемы');
         }
         return throwError(error);
       })
