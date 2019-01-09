@@ -84,8 +84,8 @@ export class ApiService {
   constructor(
     private httpClient: HttpClient,
     private otherDataService: OtherDataService
-    ) {
-      this.getDataInLocSt();
+  ) {
+    this.getDataInLocSt();
   }
 
   public signInDevice(): Observable<any> {
@@ -196,8 +196,9 @@ export class ApiService {
 
   public registerUser(userData: { firstName: string, lastName: string, birthday: string, email: string }): Observable<AccessNext> {
 
-    const httpOptions = { 
-      headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken })) };
+    const httpOptions = {
+      headers: this.getHeaders(new HttpHeaders({ 'X-Authorization': 'Bearer ' + this.deviceAccessToken }))
+    };
     const data = Object.assign({ token: this.registerToken }, userData);
     return this.httpClient.post(this.getUrl('/api/v5/signup/new/step3'), data, httpOptions).pipe(tap((result: any) => {
       this.userAccessToken = result.accessToken;
@@ -228,7 +229,8 @@ export class ApiService {
           return { title: response.title, text: response.text };
         }),
         catchError(() => {
-          return of({ title: 'Соглашение на обработку персональных данных', text: 'Не получилось загрузить соглашение. Попробуйте позже.' });
+          return of({ title: 'Соглашение на обработку персональных данных',
+          text: 'Не получилось загрузить соглашение. Попробуйте позже.' });
         })
       );
   }
