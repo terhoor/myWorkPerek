@@ -44,14 +44,6 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  getLocalStorage(): LSDataStep2 {
-    return this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
-  }
-
-  saveInLocalStorage(newData: LSDataStep2): void {
-    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
-  }
-
   saveLocalStorage(): void {
     const localData = this.getLocalStorage();
     const newData = Object.assign(localData, {
@@ -60,9 +52,27 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.saveInLocalStorage(newData);
   }
 
+  getLocalStorage(): LSDataStep2 {
+    return this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
+  }
+
+  saveInLocalStorage(newData: LSDataStep2): void {
+    this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
+  }
+
   requestNewCode() {
     this.startTimer();
     this.onRequestNewCode.emit();
+  }
+
+  startTimer(): void {
+    this.timerReset();
+    this.timerTick();
+  }
+
+  timerReset(): void {
+    this.timer$.next(this.getNewRepeatTime());
+    this.timerEnd = false;
   }
 
   timerTick(): void {
@@ -79,15 +89,6 @@ export class TimerComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  startTimer(): void {
-    this.timerReset();
-    this.timerTick();
-  }
-
-  timerReset(): void {
-    this.timer$.next(this.getNewRepeatTime());
-    this.timerEnd = false;
-  }
 
   getNewRepeatTime(): number {
     return this.apiService.repeatTime;

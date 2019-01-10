@@ -74,20 +74,19 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.nextAccess = false;
   }
 
+  haveAttempt(): boolean {
+    return this.attempt > 0;
+  }
+
   doAttempt(): void {
     this.switchOffBtnNext();
     if (this.attempt > 0) {
       this.attempt--;
     }
 
-    console.log(this.attempt);
     if (this.attempt <= 0) {
       this.formCode.disable();
     }
-  }
-
-  haveAttempt(): boolean {
-    return this.attempt > 0;
   }
 
   requestNewCode(): void {
@@ -101,10 +100,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe();
-  }
-
-  checkChar(event: KeyboardEvent): void {
-    this.otherDataService.checkChar(event);
   }
 
   checkCode(): void {
@@ -138,6 +133,8 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       this.doAttempt();
   }
 
-
+  checkChar(event: KeyboardEvent): void {
+    this.otherDataService.checkChar(event);
+  }
 
 }

@@ -47,38 +47,44 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   regUser(): void {
-    const form = this.formReg;
     const valueUser = this.formReg.value;
     const dateUser = valueUser.birthday;
-    form.disable();
+    this.formReg.disable();
     if (typeof dateUser === 'object') {
-      const year = this.addZero(dateUser.getFullYear());
-      const month = this.addZero(dateUser.getMonth());
-      const day = this.addZero(dateUser.getDate());
-      valueUser.birthday = `${year}.${month}.${day}`;
+      valueUser.birthday = this.setBirthDay(dateUser);
     }
 
     this.apiService.registerUser(valueUser)
-    .pipe(
-      catchError((error) => {
-        return of(error);
-      })
-    )
-    .subscribe((res: any) => {
-      console.log(res);
-      if (res.accessToken && res.refreshToken) {
-        this.router.navigate(['/register-success']);
-      } else if (this.errorTime === res.error.code) {
-        this.router.navigate(['/consent'], {
-          queryParams: {
-            warningTime: true
-          }
-        });
-      } else {
-        form.enable();
-        console.log('Ошибка!!!');
-      }
-    });
+      .pipe(
+        catchError((error) => {
+          return of(error);
+        })
+      )
+      .subscribe((res: any) => {
+        this.regUserResProcessing(res);
+      });
+  }
+
+  setBirthDay(dateUser: any): string {
+    const year = this.addZero(dateUser.getFullYear());
+    const month = this.addZero(dateUser.getMonth());
+    const day = this.addZero(dateUser.getDate());
+    return `${year}.${month}.${day}`;
+  }
+
+  regUserResProcessing(res: any) {
+    if (res.accessToken && res.refreshToken) {
+      this.router.navigate(['/register-success']);
+    } else if (this.errorTime === res.error.code) {
+      this.router.navigate(['/consent'], {
+        queryParams: {
+          warningTime: true
+        }
+      });
+    } else {
+      this.formReg.enable();
+      console.log('Ошибка!!!');
+    }
   }
 
   addZero(num: number): string {

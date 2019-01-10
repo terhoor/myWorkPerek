@@ -72,31 +72,36 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     const stateValid = this.consent.valid;
     this.consent.disable();
+    const resultCheck = this.submitCheckValid();
+
+    if (stateValid && resultCheck) {
+      this.submitStateValid(resultCheck);
+    }
+  }
+
+  submitCheckValid(): string {
     const phone = this.consent.controls['phone'].value;
     const clearNumber = this.otherDataService.changeNumberClear(phone);
     if (clearNumber.length !== this.lengthNumber) {
       this.consent.enable();
       this.consent.controls['phone'].setErrors({ 'incorrect': true });
-      return;
+      return '';
     }
-    let nextStep: boolean;
-    if (stateValid) {
-      this.apiService.checkPhone(clearNumber)
-        .pipe(
-          takeUntil(this.destroy$),
-        )
-        .subscribe(dataInfo => {
-          nextStep = !!dataInfo.token;
-          if (nextStep) {
-            this.router.navigate(['/code']);
-          }
-        });
-    }
+    return clearNumber;
   }
 
-
-  openDialogWarning(): void {
-    this.otherDataService.openDialogWarning();
+  submitStateValid(clearNumber: string): void {
+    let nextStep: boolean;
+    this.apiService.checkPhone(clearNumber)
+      .pipe(
+        takeUntil(this.destroy$),
+      )
+      .subscribe(dataInfo => {
+        nextStep = !!dataInfo.token;
+        if (nextStep) {
+          this.router.navigate(['/code']);
+        }
+      });
   }
 
   showPopupRule(): void {
@@ -109,6 +114,10 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     this.apiService.getAgreement().subscribe(agreement => {
       this.otherDataService.openDialog(agreement);
     });
+  }
+
+  openDialogWarning(): void {
+    this.otherDataService.openDialogWarning();
   }
 
 }
