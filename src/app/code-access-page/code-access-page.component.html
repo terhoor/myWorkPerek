@@ -8,11 +8,11 @@
   </div>
 
   <div class="code">
-    <form [formGroup]="formCode" (submit)="checkCode()">
+    <form [formGroup]="formCode" (submit)="runCheckCode()">
       <mat-form-field>
         <input matInput placeholder="Код подтверждения" [formControlName]="'code'" (keypress)="checkChar($event)">
       </mat-form-field>
-      <div class="warning" *ngIf="formCode.get('code').invalid && formCode.get('code').touched">
+      <div class="warning" *ngIf="formCode.get('code').invalid && formCode.get('code').touched || codeError">
         <span>
           Код подтверждения введен некорректно
         </span>
@@ -20,7 +20,7 @@
       <div class="text-repeat" *ngIf="!formCode.disabled">
         <app-timer (onRequestNewCode)="requestNewCode()"></app-timer>
       </div>
-      <div *ngIf="!attempt" class="warning">
+      <div *ngIf="!haveAttempt()" class="warning">
         Превышен лимин попыток
       </div>
 

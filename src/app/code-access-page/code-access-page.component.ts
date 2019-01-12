@@ -16,13 +16,13 @@ import { LocaleStorageService } from '../shared/services/locale-storage.service'
 })
 export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
-  attempt: number = this.apiService.repeatCount;
-  timer$: BehaviorSubject<number>;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+  private localData: LSDataStep2;
+  private attempt: number;
+  codeError: boolean = false;
   phoneNumber: string;
   nextAccess: boolean = false;
   formCode: FormGroup;
-  destroy$: Subject<boolean> = new Subject<boolean>();
-  localData: LSDataStep2;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +33,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.attempt = this.apiService.repeatCount;
     this.localData = this.localeStorageService.takeInLocalStorage(Steps.step2) || {};
     this.formCode = this.fb.group({
       code: [this.localData.code,
@@ -52,6 +53,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.saveLocalStorage();
         this.switchOnBtnNext();
+        this.deleteErrorForCode();
       });
 
   }
@@ -61,40 +63,40 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  saveLocalStorage(): void {
+  private saveLocalStorage(): void {
     const newData = Object.assign(this.localData, this.formCode.value);
     this.localeStorageService.saveInLocalStorage(Steps.step2, newData);
   }
 
-  switchOnBtnNext(): void {
+  private switchOnBtnNext(): void {
     this.nextAccess = this.haveAttempt();
   }
 
-  switchOffBtnNext(): void {
+  private switchOffBtnNext(): void {
     this.nextAccess = false;
   }
 
-  haveAttempt(): boolean {
+  public haveAttempt(): boolean {
     return this.attempt > 0;
   }
 
-  doAttempt(): void {
+  private doAttempt(): void {
     this.switchOffBtnNext();
     if (this.attempt > 0) {
       this.attempt--;
     }
 
     if (this.attempt <= 0) {
-      this.formCode.disable();
+      // this.formCode.disable();
     }
   }
 
-  requestNewCode(): void {
+  public requestNewCode(): void {
     this.switchOffBtnNext();
     this.repeatSentCode();
   }
 
-  repeatSentCode(): void {
+  private repeatSentCode(): void {
     this.apiService.checkPhone(this.apiService.phone)
       .pipe(
         takeUntil(this.destroy$),
@@ -102,13 +104,11 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  checkCode(): void {
+  public runCheckCode(): void {
     const stateValid = this.formCode.valid;
-    this.formCode.disable();
     const valueFormCode = this.formCode.value.code;
     if (!stateValid) {
-      this.formCode.controls['code'].enable();
-      this.doAttempt();
+      this.funcResponseCode();
       return;
     }
     this.apiService.checkCode(valueFormCode)
@@ -121,19 +121,23 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
     .subscribe((res: any) => this.funcResponseCode(res));
   }
 
-  funcResponseCode(res: any) {
+  private funcResponseCode(res: any = {}) {
       if (res.success) {
         this.otherDataService.generateNumberCard();
         this.router.navigate(['/registration']);
         return;
       }
-
-      this.formCode.controls['code'].setErrors({ 'incorreсt': true });
-      this.formCode.controls['code'].enable();
+      this.formCode.controls['code'].setErrors({'incorreсt': true});
       this.doAttempt();
+      this.codeError = true;
   }
 
-  checkChar(event: KeyboardEvent): void {
+  private deleteErrorForCode() {
+    this.codeError = false;
+  }
+
+
+  public checkChar(event: KeyboardEvent): void {
     this.otherDataService.checkChar(event);
   }
 

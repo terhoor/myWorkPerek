@@ -13,8 +13,8 @@ import { LocaleStorageService } from 'src/app/shared/services/locale-storage.ser
 })
 export class TimerComponent implements OnInit, OnDestroy {
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   timerEnd: boolean = false;
-  destroy$: Subject<boolean> = new Subject<boolean>();
   timer$: BehaviorSubject<number>;
   @Output() onRequestNewCode: EventEmitter<void> = new EventEmitter();
 

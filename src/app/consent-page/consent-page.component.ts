@@ -15,9 +15,9 @@ import { LSDataStep1 } from '../shared/interfaces/steps-models';
   styleUrls: ['./consent-page.component.css']
 })
 export class ConsentPageComponent implements OnInit, OnDestroy {
-  lengthNumber = 12;
-  consent: FormGroup;
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  private lengthNumber = 12;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+  public consent: FormGroup;
 
   public phoneMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
 
@@ -45,7 +45,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     });
 
     this.consent.valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(300),
       takeUntil(this.destroy$),
       tap(() => {
         this.localeStorageService.saveInLocalStorage(Steps.step1, this.consent.value);
