@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
@@ -19,7 +19,6 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private localData: LSDataStep2;
   private attempt: number;
-  codeError: boolean = false;
   phoneNumber: string;
   nextAccess: boolean = false;
   formCode: FormGroup;
@@ -46,16 +45,18 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
 
     this.phoneNumber = this.otherDataService.changeNumberDecoration(this.apiService.phone);
 
-    this.formCode.controls['code'].valueChanges
+    this.formCode.statusChanges
       .pipe(
         takeUntil(this.destroy$)
         )
       .subscribe(() => {
-        this.saveLocalStorage();
-        this.switchOnBtnNext();
-        this.deleteErrorForCode();
+        if (this.formCode.valid) {
+          this.saveLocalStorage();
+          this.switchOnBtnNext();
+        } else {
+          this.switchOffBtnNext();
+        }
       });
-
   }
 
   ngOnDestroy() {
@@ -81,14 +82,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   private doAttempt(): void {
-    this.switchOffBtnNext();
-    if (this.attempt > 0) {
-      this.attempt--;
-    }
-
-    if (this.attempt <= 0) {
-      // this.formCode.disable();
-    }
+    this.attempt--;
   }
 
   public requestNewCode(): void {
@@ -105,12 +99,7 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
   }
 
   public runCheckCode(): void {
-    const stateValid = this.formCode.valid;
     const valueFormCode = this.formCode.value.code;
-    if (!stateValid) {
-      this.funcResponseCode();
-      return;
-    }
     this.apiService.checkCode(valueFormCode)
     .pipe(
       takeUntil(this.destroy$),
@@ -128,14 +117,9 @@ export class CodeAccessPageComponent implements OnInit, OnDestroy {
         return;
       }
       this.formCode.controls['code'].setErrors({'incorreсt': true});
+      this.switchOffBtnNext();
       this.doAttempt();
-      this.codeError = true;
   }
-
-  private deleteErrorForCode() {
-    this.codeError = false;
-  }
-
 
   public checkChar(event: KeyboardEvent): void {
     this.otherDataService.checkChar(event);
