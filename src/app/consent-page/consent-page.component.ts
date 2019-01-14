@@ -1,9 +1,9 @@
 import { Component, OnInit, OnChanges, DoCheck, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OtherDataService } from '../shared/services/other-data.service';
 import { ApiService } from '../shared/services/api.service';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent, Subject, of } from 'rxjs';
 import { takeUntil, debounceTime, tap } from 'rxjs/operators';
 import { Steps } from '../shared/steps';
 import { LocaleStorageService } from '../shared/services/locale-storage.service';
@@ -15,10 +15,9 @@ import { LSDataStep1 } from '../shared/interfaces/steps-models';
   styleUrls: ['./consent-page.component.css']
 })
 export class ConsentPageComponent implements OnInit, OnDestroy {
-  private lengthNumber = 12;
   private destroy$: Subject<boolean> = new Subject<boolean>();
   public consent: FormGroup;
-
+  private clearPhone: string = '';
   public phoneMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
 
   constructor(
@@ -30,27 +29,37 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
     private localeStorageService: LocaleStorageService,
   ) { }
 
+  validatorLength(control: AbstractControl) {
+    const needLength = this.apiService.getLengthPhone();
+    const clearPhone = this.otherDataService.changeNumberClear(control.value);
+    const lengthPhone = clearPhone.length;
+    if (lengthPhone === needLength) {
+      this.clearPhone = clearPhone;
+      return of(null);
+    }
+    return of({'phoneError': true});
+  }
+
   ngOnInit() {
     const localData: LSDataStep1 = this.localeStorageService.takeInLocalStorage(Steps.step1) || {};
     this.apiService.generateInstanceId((Math.random() * 20).toString());
-    this.apiService.signInDevice().subscribe(data => {
+    this.apiService.signInDevice().subscribe(_ => {
     });
 
     this.consent = this.fb.group({
       phone: [localData['phone'], [
-        Validators.required
-      ]],
+        Validators.required,
+      ], this.validatorLength.bind(this)],
       checkbox1: [localData['checkbox1'] || false, [Validators.pattern('true')]],
       checkbox2: [localData['checkbox2'] || false, [Validators.pattern('true')]]
     });
 
     this.consent.valueChanges.pipe(
-      debounceTime(300),
-      takeUntil(this.destroy$),
-      tap(() => {
+      takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
         this.localeStorageService.saveInLocalStorage(Steps.step1, this.consent.value);
-      }))
-      .subscribe();
+      });
 
     this.route.queryParams
       .pipe(
@@ -70,29 +79,8 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    const stateValid = this.consent.valid;
-    this.consent.disable();
-    const resultCheck = this.submitCheckValid();
-
-    if (stateValid && resultCheck) {
-      this.submitStateValid(resultCheck);
-    }
-  }
-
-  submitCheckValid(): string {
-    const phone = this.consent.controls['phone'].value;
-    const clearNumber = this.otherDataService.changeNumberClear(phone);
-    if (clearNumber.length !== this.lengthNumber) {
-      this.consent.enable();
-      this.consent.controls['phone'].setErrors({ 'incorrect': true });
-      return '';
-    }
-    return clearNumber;
-  }
-
-  submitStateValid(clearNumber: string): void {
     let nextStep: boolean;
-    this.apiService.checkPhone(clearNumber)
+    this.apiService.checkPhone(this.clearPhone)
       .pipe(
         takeUntil(this.destroy$),
       )
@@ -103,6 +91,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
         }
       });
   }
+
 
   showPopupRule(): void {
     this.apiService.getRules().subscribe(rule => {
@@ -119,5 +108,7 @@ export class ConsentPageComponent implements OnInit, OnDestroy {
   openDialogWarning(): void {
     this.otherDataService.openDialogWarning();
   }
+
+
 
 }

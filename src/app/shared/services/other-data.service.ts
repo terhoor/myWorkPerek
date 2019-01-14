@@ -27,7 +27,7 @@ export class OtherDataService {
   changeNumberClear(numberStr): string {
     let result: string = '';
     if (numberStr.charAt(0) === '+') {
-      result = numberStr.replace(/\D/g, '')
+      result = numberStr.replace(/\D/g, '');
     } else {
       result = '+7' + numberStr.replace(/\D/g, '');
     }
@@ -55,10 +55,8 @@ export class OtherDataService {
       height: '100vh',
       maxHeight: '100vh',
       maxWidth: '100vw',
-  
       data: strInfo
     });
-  
   }
 
   openDialogWarning(): void {
@@ -69,11 +67,12 @@ export class OtherDataService {
         top: 'auto'
       }
     });
-  
+
     dialogRefWarning.afterClosed().subscribe(answer => {
       answer = !!answer;
       this.accessForMerge.next(answer);
       console.log(this.accessForMerge.getValue());
     });
   }
+
 }

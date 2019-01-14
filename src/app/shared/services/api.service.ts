@@ -19,6 +19,7 @@ export class ApiService {
   private _deviceRefreshToken: string; // device refresh token
   private _phone: string; // phone number
   private _userExists = false; // флаг существования
+  private lengthNumber = 12;
   codeToken: string;
   repeatTime = 30; // time for repeat
   repeatCount = 5; // count repeat
@@ -252,6 +253,10 @@ export class ApiService {
 
   public setPhone(phone: string): void {
     this._phone = phone;
+  }
+
+  public getLengthPhone(): number {
+    return this.lengthNumber;
   }
 
 }
